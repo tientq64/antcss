@@ -298,21 +298,25 @@ list =
 			hd: \hidden
 			vs: \visible
 			sc: \scroll
-	ovsb:
+	osb:
 		props \overscroll-behavior,
 			a: \auto
 			cn: \contain
 			n: \none
-	ovsbx:
+	osbx:
 		props \overscroll-behavior-x,
 			a: \auto
 			cn: \contain
 			n: \none
-	ovsby:
+	osby:
 		props \overscroll-behavior-y,
 			a: \auto
 			cn: \contain
 			n: \none
+	scb:
+		props \scroll-behavior,
+			sm: \smooth
+			a: \auto
 	ps:
 		props \position,
 			st: \static
@@ -662,6 +666,11 @@ list =
 	to:
 		el: "overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
 		cp: "overflow:hidden;text-overflow:clip;white-space:nowrap"
+	tsr:
+		ds: "-webkit-text-security:disc;text-security:disc"
+		cr: "-webkit-text-security:circle;text-security:circle"
+		sq: "-webkit-text-security:square;text-security:square"
+		n: "-webkit-text-security:none;text-security:none"
 	lc:
 		repeat 1 6 ~>
 			"display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:#it"
@@ -898,7 +907,7 @@ list =
 	trt:
 		props \transition-timing-function,
 			ln: \linear
-			out: "cubic-bezier(.08,.69,.23,.94)"
+			ou: "cubic-bezier(.08,.69,.23,.94)"
 			in: "cubic-bezier(.77,.06,.92,.31)"
 			io: "cubic-bezier(.76,.08,.23,.94)"
 	tre:
@@ -957,8 +966,6 @@ list =
 			n: \none
 	cs:
 		props \cursor,
-			a: \auto
-			df: \default
 			pt: \pointer
 			wt: \wait
 			tx: \text
@@ -971,25 +978,32 @@ list =
 			ch: \crosshair
 			gr: \grab
 			gb: \grabing
+			df: \default
+			a: \auto
+			n: \none
 	ol:
 		props \outline,
 			n: \none
 	pe:
 		props \pointer-events,
-			n: \none
 			a: \auto
+			n: \none
 	rz:
 		props \resize,
-			n: \none
+			bo: \both
 			x: \horizontal
 			y: \vertical
-			bo: \both
+			n: \none
 	us:
 		props \user-select,
-			n: \none
 			tx: \text
 			al: \all
 			a: \auto
+			n: \none
+	ud:
+		el: "-webkit-user-drag:element;user-drag:element"
+		a: "-webkit-user-drag:auto;user-drag:auto"
+		n: "-webkit-user-drag:none;user-drag:none"
 	ar:
 		"": "--antArx:1;--antAry:1;aspect-ratio:var(--antArx)/var(--antAry)"
 	arx:
