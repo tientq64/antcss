@@ -4,14 +4,24 @@ process.chdir __dirname
 negate = (target) ->
 	obj = {}
 	for k, val of target
-		k .= replace /^| /g \$&__
+		k = k
+			.split " "
+			.map (\__ +)
+			.join " "
 		obj[k] = "__#val"
 	obj
 
-empty = (target, key) ->
+empty = (key, target) ->
 	obj = {...target}
-	obj"" = obj[key]
-	delete obj[key]
+	for k of obj
+		ks = k.split " "
+		index = ks.indexOf key
+		if index >= 0
+			ks[index] = ""
+			ks .= join " "
+			obj[ks] = obj[k]
+			delete obj[k]
+			break
 	obj
 
 repeat = (a, b, mapFn) ->
@@ -24,15 +34,12 @@ repeat = (a, b, mapFn) ->
 	while a++ < b
 	obj
 
-map = (arr, defl, mapFn) ->
-	if typeof defl is \function
-		[defl, mapFn] = [, defl]
+map = (arr, mapFn) ->
 	obj = {}
 	for val in arr
-		prop = if val is defl => "" else val
-		res = if mapFn => mapFn val else (prop): val
+		res = if mapFn => mapFn val else (val): val
 		unless res instanceof Object
-			res = (prop): res
+			res = (val): res
 		obj <<< res
 	obj
 
@@ -110,30 +117,21 @@ spaces0 = {
 }
 
 percents4 =
-	"1-2 2-4": \50%
-	"1-3": \33.33333%
-	"2-3": \66.66667%
-	"1-4": \25%
-	"3-4": \75%
+	"-3": \25%
+	"-6": \50%
+	"-9": \75%
 	f: \100%
 
 percents12 = {
-	"1-2 2-4 3-6 6-12": \50%
-	"1-3 2-6 4-12": \33.33333%
-	"2-3 4-6 8-12": \66.66667%
-	"1-4 3-12": \25%
-	"3-4 9-12": \75%
-	"1-5": \20%
-	"2-5": \40%
-	"3-5": \60%
-	"4-5": \80%
-	"1-6 2-12": \16.66667%
-	"5-6 10-12": \83.33333%
-	"1-12": \8.33333%
-	"5-12": \41.66667%
-	"7-12": \58.33333%
-	"11-12": \91.66667%
-	f: \100%
+	...percents4
+	"-1": \8.33333%
+	"-2": \16.66667%
+	"-4": \33.33333%
+	"-5": \41.66667%
+	"-7": \58.33333%
+	"-8": \66.66667%
+	"-10": \83.33333%
+	"-11": \91.66667%
 }
 
 opacities =
@@ -219,50 +217,52 @@ colors =
 	b9: "30,58,138"
 
 tranCurColor = {
-	tr: \transparent
-	cc: \currentColor
+	t: \transparent
+	c: \currentColor
 }
 
 blends =
-	nm: \normal
-	ml: \multiply
-	sc: \screen
-	ov: \overlay
-	dk: \darken
-	lg: \lighten
+	m: \normal
+	y: \multiply
+	r: \screen
+	o: \overlay
+	d: \darken
+	l: \lighten
 	cd: \color-dodge
 	cb: \color-burn
 	hl: \hard-light
 	sl: \soft-light
-	df: \difference
-	ex: \exclusion
-	he: \hue
-	sa: \saturation
-	cl: \color
-	lm: \luminosity
+	f: \difference
+	x: \exclusion
+	h: \hue
+	s: \saturation
+	c: \color
+	u: \luminosity
 
 list =
 	"":
 		bl: \display:block
 		ib: \display:inline-block
-		f: \display:flex
-		if: \display:inline-flex
+		f: "display:flex;justify-content:center;align-items:center"
+		if: "display:inline-flex;justify-content:center;align-items:center"
 		g: \display:grid
 		ig: \display:inline-grid
 		n: \display:none
 		ab: \position:absolute
+		af: "position:absolute;left:0;top:0;width:100%;height:100%"
 		rl: \position:relative
+		fd: \position:fixed
 	bd:
 		props \box-decoration-break,
 			"": \slice
-			cl: \clone
+			c: \clone
 	bz:
 		props \box-sizing,
 			"": \border-box
-			ct: \content-box
+			c: \content-box
 	d:
 		props \display,
-			i: \inline
+			"": \inline
 			t: \table
 			it: \inline-table
 			f: \flow-root
@@ -270,7 +270,7 @@ list =
 			l: \list-item
 	fl:
 		props \float,
-			r: \right
+			"": \right
 			l: \left
 			n: \none
 	cl:
@@ -282,14 +282,14 @@ list =
 	ob:
 		props \object-fit,
 			c: \contain
-			v: \cover
+			"": \cover
 			f: \fill
 			n: \none
 			s: \scale-down
 	op:
 		props \object-position,
-			positions
-	ov:
+			empty \c positions
+	o_:
 		props \overflow,
 			a: \auto
 			h: \hidden
@@ -301,63 +301,64 @@ list =
 			h: \hidden
 			v: \visible
 			s: \scroll
+		"": "overflow-x:auto;overflow-y:hidden"
 	oy:
 		props \overflow-y,
 			a: \auto
 			h: \hidden
 			v: \visible
 			s: \scroll
+		"": "overflow-x:hidden;overflow-y:auto"
 	os:
 		props \overscroll-behavior,
 			a: \auto
-			c: \contain
+			"": \contain
 			n: \none
 	osx:
 		props \overscroll-behavior-x,
 			a: \auto
-			c: \contain
+			"": \contain
 			n: \none
 	osy:
 		props \overscroll-behavior-y,
 			a: \auto
-			c: \contain
+			"": \contain
 			n: \none
 	sb:
 		props \scroll-behavior,
-			s: \smooth
+			"": \smooth
 			a: \auto
 	ps:
 		props \position,
-			f: \fixed
-			s: \static
+			"": \static
 			y: \sticky
 	i:
 		props \inset,
-			0: 0
+			"": 0
 	t:
 		props \top,
-			empty spaces0, 0
+			empty 0 spaces0
 			negate spacesP
 			percents4
 			negate percents4
 			a: \auto
 	r:
 		props \right,
-			empty spaces0, 0
+			empty 0 spaces0
 			negate spacesP
 			percents4
 			negate percents4
 			a: \auto
 	b:
 		props \bottom,
-			empty spaces0, 0
+			empty 0 spaces0
 			negate spacesP
 			percents4
 			negate percents4
 			a: \auto
 	l:
 		props \left,
-			empty spaces0, 0
+			empty 0 spaces0
 			negate spacesP
 			percents4
 			negate percents4
@@ -378,9 +379,9 @@ list =
 			a: \auto
 	f:
 		props \flex,
-			1: "1 1 0"
-			a: "1 1 auto"
-			i: "0 1 auto"
+			1: 1
+			a: \auto
+			i: \initial
 			n: \none
 		props \flex-direction,
 			r: \row
@@ -390,7 +391,7 @@ list =
 		props \flex-wrap,
 			w: \wrap
 			r: \wrap-reverse
-			n: \nowrap
+			o: \nowrap
 	fg:
 		props \flex-grow,
 			0: 0
@@ -402,60 +403,53 @@ list =
 	od:
 		props \order,
 			repeat 0 12
-			fs: -9999
-			ls: 9999
-	g:
-		props \grid-template-columns,
-			repeat 1 12 ~>
-				(it): "repeat(#it,minmax(0,1fr))"
-				"A#it": "repeat(#it,auto)"
-			n: \none
+			f: -9999
+			l: 9999
+	g_:
 		props \grid-auto-flow,
 			r: \row
 			c: \column
 			rd: "row dense"
 			cd: "column dense"
-	gx:
-		props \grid-column,
-			repeat 1 12 ~> "span #it/span #it"
-			f: \1/-1
-			a: \auto
-	gxs:
-		props \grid-column-start,
-			repeat 1 13
-			a: \auto
-	gxe:
-		props \grid-column-end,
-			repeat 1 13
-			a: \auto
+	gc:
+		props \grid-template-columns,
+			repeat 1 12 ~>
+				(it): "repeat(#it,minmax(0,1fr))"
+				"A#it": "repeat(#it,auto)"
+			n: \none
 	gr:
 		props \grid-template-rows,
 			repeat 1 6 ~>
 				(it): "repeat(#it,minmax(0,1fr))"
 				"A#it": "repeat(#it,auto)"
 			n: \none
+	gx:
+		props \grid-column,
+			repeat 1 12 ~> "span #it/span #it"
+			"": \1/-1
+			a: \auto
+	gs:
+		props \grid-column-start,
+			empty 1 (repeat 1 13)
+			a: \auto
+	ge:
+		props \grid-column-end,
+			empty 13 (repeat 1 13)
+			a: \auto
 	gy:
 		props \grid-row,
 			repeat 1 6 ~> "span #it/span #it"
-			f: \1/-1
+			"": \1/-1
 			a: \auto
 	gys:
 		props \grid-row-start,
-			repeat 1 7
+			empty 1 (repeat 1 7)
 			a: \auto
 	gye:
 		props \grid-row-end,
-			repeat 1 7
+			empty 7 (repeat 1 7)
 			a: \auto
 	ga:
-		props \grid-auto-rows,
-			a: \auto
-			mi: \min-content
-			ma: \max-content
-			fr: "minmax(0,1fr)"
-			repeat 1 12 ~>
-				unit (float (100 / it)toFixed 5), \%
-	gac:
 		props \grid-auto-columns,
 			a: \auto
 			mi: \min-content
@@ -463,20 +457,28 @@ list =
 			fr: "minmax(0,1fr)"
 			repeat 1 6 ~>
 				unit (float (100 - it / 6 * 100)toFixed 5), \%
-	gp:
+	gar:
+		props \grid-auto-rows,
+			a: \auto
+			mi: \min-content
+			ma: \max-content
+			fr: "minmax(0,1fr)"
+			repeat 1 12 ~>
+				unit (float (100 / it)toFixed 5), \%
+	g:
 		props \gap,
 			spaces0
-	gpx:
+	gw:
 		props \column-gap,
 			spaces0
-	gpy:
+	gh:
 		props \row-gap,
 			spaces0
 	j:
 		props \justify-content,
 			s: \flex-start
 			e: \flex-end
-			c: \center
+			"": \center
 			b: \space-between
 			r: \space-around
 			v: \space-evenly
@@ -484,20 +486,20 @@ list =
 		props \justify-items,
 			s: \flex-start
 			e: \flex-end
-			c: \center
+			"": \center
 			h: \stretch
 	js:
 		props \justify-self,
 			s: \flex-start
 			e: \flex-end
-			c: \center
+			"": \center
 			h: \stretch
 			a: \auto
 	ac:
 		props \align-content,
 			s: \flex-start
 			e: \flex-end
-			c: \center
+			"": \center
 			b: \space-between
 			r: \space-around
 			v: \space-evenly
@@ -505,76 +507,76 @@ list =
 		props \align-items,
 			s: \flex-start
 			e: \flex-end
-			c: \center
+			"": \center
 			b: \baseline
 			h: \stretch
 	as:
 		props \align-self,
 			s: \flex-start
 			e: \flex-end
-			c: \center
+			"": \center
 			h: \stretch
 			a: \auto
 	p:
 		props \padding,
-			spaces0
+			empty 3 spaces0
 	px:
 		props [\padding-left \padding-right],
-			spaces0
+			empty 3 spaces0
 	py:
 		props [\padding-top \padding-bottom],
-			spaces0
+			empty 3 spaces0
 	pt:
 		props \padding-top,
-			spaces0
+			empty 3 spaces0
 	pr:
 		props \padding-right,
-			spaces0
+			empty 3 spaces0
 	pb:
 		props \padding-bottom,
-			spaces0
+			empty 3 spaces0
 	pl:
 		props \padding-left,
-			spaces0
+			empty 3 spaces0
 	m:
 		props \margin,
-			spaces0
+			empty 3 spaces0
 			negate spacesP
 			a: \auto
 	mx:
 		props [\margin-left \margin-right],
-			spaces0
+			empty 3 spaces0
 			negate spacesP
 			a: \auto
 	my:
 		props [\margin-top \margin-bottom],
-			spaces0
+			empty 3 spaces0
 			negate spacesP
 			a: \auto
 	mt:
 		props \margin-top,
-			spaces0
+			empty 3 spaces0
 			negate spacesP
 			a: \auto
 	mr:
 		props \margin-right,
-			spaces0
+			empty 3 spaces0
 			negate spacesP
 			a: \auto
 	mb:
 		props \margin-bottom,
-			spaces0
+			empty 3 spaces0
 			negate spacesP
 			a: \auto
 	ml:
 		props \margin-left,
-			spaces0
+			empty 3 spaces0
 			negate spacesP
 			a: \auto
 	w:
 		props \width,
 			spaces0
-			empty percents12, \f
+			empty \f percents12
 			a: \auto
 			v: \100vw
 			i: \min-content
@@ -582,7 +584,7 @@ list =
 	wi:
 		props \min-width,
 			spaces0
-			empty percents12, \f
+			empty \f percents12
 			a: \auto
 			v: \100vw
 			i: \min-content
@@ -590,7 +592,7 @@ list =
 	wx:
 		props \max-width,
 			spaces0
-			empty percents12, \f
+			empty \f percents12
 			a: \auto
 			v: \100vw
 			i: \min-content
@@ -598,19 +600,19 @@ list =
 	h:
 		props \height,
 			spaces0
-			empty percents12, \f
+			empty \f percents12
 			a: \auto
 			v: \100vh
 	hi:
 		props \min-height,
 			spaces0
-			empty percents12, \f
+			empty \f percents12
 			a: \auto
 			v: \100vh
 	hx:
 		props \max-height,
 			spaces0
-			empty percents12, \f
+			empty \f percents12
 			a: \auto
 			v: \100vh
 	ff:
@@ -627,7 +629,7 @@ list =
 			m: \normal
 	fw:
 		props \font-weight,
-			empty (repeat 1 9 ~> it * 100), 7
+			empty 7 repeat 1 9 ~> it * 100
 	ls:
 		props \letter-spacing,
 			"": 0
@@ -639,13 +641,13 @@ list =
 	lh:
 		props \lihe-height,
 			4: 1
-			5: 1.25
+			"": 1.25
 			6: 1.5
 			7: 1.75
 			8: 2
 	lt:
 		props \list-style-type,
-			n: \none
+			"": \none
 			d: \disc
 			m: \decimal
 			s: \square
@@ -658,7 +660,7 @@ list =
 		props \text-align,
 			l: \left
 			r: \right
-			c: \center
+			"": \center
 			j: \justify
 	c:
 		props \color,
@@ -672,54 +674,54 @@ list =
 		props \text-decoration,
 			u: \underline
 			l: \line-through
-			n: \none
+			"": \none
 	tt:
 		props \text-transform,
-			u: \uppercase
+			"": \uppercase
 			l: \lowercase
 			c: \capitalize
 			n: \none
 	to:
-		e: "overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+		"": "overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
 		c: "overflow:hidden;text-overflow:clip;white-space:nowrap"
 	tc:
 		d: "-webkit-text-security:disc;text-security:disc"
 		c: "-webkit-text-security:circle;text-security:circle"
-		s: "-webkit-text-security:square;text-security:square"
+		"": "-webkit-text-security:square;text-security:square"
 		n: "-webkit-text-security:none;text-security:none"
 	lc:
-		repeat 1 6 ~>
+		empty 2 repeat 1 6 ~>
 			"display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:#it"
 	va:
 		props \vertical-align,
 			t: \top
-			tt: \text-top
-			m: \middle
+			p: \text-top
+			"": \middle
 			l: \baseline
-			tb: \text-bottom
+			m: \text-bottom
 			b: \bottom
 	ws:
 		props \white-space,
 			m: \normal
-			n: \nowrap
+			"": \nowrap
 			p: \pre
 			l: \pre-line
 			w: \pre-wrap
 	wb:
 		props \word-break,
 			m: \normal
-			w: \break-word
+			"": \break-word
 			b: \break-all
 			k: \keep-all
 	bga:
 		props \background-attachment,
-			f: \fixed
+			"": \fixed
 			l: \local
 			s: \scroll
 	bgc:
 		props \background-clip,
 			b: \border-box
-			p: \padding-box
+			"": \padding-box
 			c: \content-box
 	bg:
 		props \background-color,
@@ -729,14 +731,14 @@ list =
 			"--antBgo:1;background-color:rgba(#v,var(--antBgo))"
 	bgo:
 		props \--antBgo,
-			opacities
+			empty 50 opacities
 	bgp:
 		props \background-position,
-			positions
+			empty \c positions
 	bgr:
 		props \background-repeat,
 			r: \repeat
-			n: \no-repeat
+			"": \no-repeat
 			x: \repeat-x
 			y: \repeat-y
 			o: \round
@@ -745,10 +747,10 @@ list =
 		props \background-size,
 			a: \auto
 			c: \contain
-			v: \cover
+			"": \cover
 	bgi:
 		props: \background-image,
-			n: \none
+			"": \none
 	br:
 		props \border-radius,
 			spaces0[0 1 2 3 4 5 6]
@@ -827,10 +829,10 @@ list =
 			"--antBo:1;border-color:rgba(#v,var(--antBo))"
 	bo:
 		props \--antBo,
-			opacities
+			empty 50 opacities
 	bs:
 		props \border-style,
-			s: \solid
+			"": \solid
 			d: \dashed
 			o: \dotted
 			n: \none
@@ -846,20 +848,20 @@ list =
 			n: \none
 	o:
 		props \opacity,
-			opacities
+			empty 50 opacities
 	bm:
 		props \mix-blend-mode,
-			blends
+			empty \m blends
 	bgb:
 		props \background-blend-mode,
-			blends
+			empty \m blends
 	ft:
 		props \filter,
 			"": "var(--antFtL) var(--antFtB) var(--antFtC) var(--antFtG) var(--antFtH) var(--antFtI) var(--antFtS) var(--antFtP)"
 			n: \none
 	ftL:
 		0: "--antFtL:blur(0)"
-		map [4 8 12 16 24 40 64] 8 ~>
+		empty 8 map [4 8 12 16 24 40 64] ~>
 			"--antFtL:blur(#{it}px)"
 	ftB:
 		map [0 50 75 90 95 100 105 110 125 150 200] ~>
@@ -868,7 +870,7 @@ list =
 		map [0 50 75 100 125 150 200] ~>
 			"--antFtC:contrast(#{float it / 100})"
 	ftG:
-		map [0 1] 1 ~>
+		empty 1 map [0 1] ~>
 			"--antFtG:grayscale(#it)"
 	ftH:
 		map [0 15 30 60 90 180] ~>
@@ -876,45 +878,45 @@ list =
 		map [15 30 60 90 180] ~>
 			["__#it" "--antFtH:hue-rotate(-#{it}deg)"]
 	ftI:
-		map [0 1] 1 ~>
+		empty 1 map [0 1] ~>
 			"--antFtI:invert(#it)"
 	ftS:
 		map [0 50 100 150 200] ~>
 			"--antFtS:saturate(#{float it / 100})"
 	ftP:
-		map [0 1] 1 ~>
+		empty 1 map [0 1] ~>
 			"--antFtP:sepia(#it)"
 	bp:
 		props \border-collapse,
-			cl: \collapse
-			sp: \separate
+			c: \collapse
+			"": \separate
 	tl:
 		props \table-layout,
 			a: \auto
-			fd: \fixed
+			"": \fixed
 	ts:
 		props: \transition,
 			"": "transition:.15s cubic-bezier(.08,.69,.23,.94)"
 			tf: "transition:transform .15s cubic-bezier(.08,.69,.23,.94)"
-			op: "transition:opacity .15s cubic-bezier(.08,.69,.23,.94)"
+			o: "transition:opacity .15s cubic-bezier(.08,.69,.23,.94)"
 			sh: "transition:box-shadow .15s cubic-bezier(.08,.69,.23,.94)"
-			cl: "transition-property:background-color,border-color,color,fill,stroke;transition-duration:.15s;transition-timing-function:cubic-bezier(.08,.69,.23,.94)"
+			c: "transition-property:background-color,border-color,color,fill,stroke;transition-duration:.15s;transition-timing-function:cubic-bezier(.08,.69,.23,.94)"
 			n: \transition:none
 	tsd:
-		map [75 100 150 200 300 500 700 1000] ~>
+		empty 150 map [75 100 150 200 300 500 700 1000] ~>
 			"transition-duration:#{float it / 1000}s"
 	tst:
 		props \transition-timing-function,
-			ln: \linear
-			ou: "cubic-bezier(.08,.69,.23,.94)"
-			in: "cubic-bezier(.77,.06,.92,.31)"
+			l: \linear
+			"": "cubic-bezier(.08,.69,.23,.94)"
+			i: "cubic-bezier(.77,.06,.92,.31)"
 			io: "cubic-bezier(.76,.08,.23,.94)"
 	tsl:
 		map [75 100 150 200 300 500 700 1000] ~>
 			"transition-delay:#{float it / 1000}s"
 	am:
 		props \animation,
-			rt: "antAmRo 1s linear infinite"
+			rt: "antAmRt 1s linear infinite"
 			n: \none
 	tf:
 		"": "--antTx:0;--antTy:0;--antRt:0;--antSx:1;--antSy:1;--antKx:0;--antKy:0;transform:translate(var(--antTx),var(--antTy))rotate(var(--antRt))scale(var(--antSx),var(--antSy))skew(var(--antKx),var(--antKy))"
@@ -922,17 +924,17 @@ list =
 		n: \transform:none
 	tfo:
 		props \transform-origin,
-			positions
+			empty \c positions
 	tx:
 		props \--antTx,
-			spaces0
-			negate spacesP
+			empty \f spaces0
+			negate empty \f spacesP
 			percents4
 			negate percents4
 	ty:
 		props \--antTy,
-			spaces0
-			negate spacesP
+			empty \f spaces0
+			negate empty \f spacesP
 			percents4
 			negate percents4
 	rt:
@@ -965,7 +967,7 @@ list =
 			"": \none
 	cs:
 		props \cursor,
-			p: \pointer
+			"": \pointer
 			w: \wait
 			t: \text
 			m: \move
@@ -983,21 +985,20 @@ list =
 	ol:
 		props \outline,
 			n: \none
-		props \box-shadow,
-			"": "var(--antRgi) 0 0 0 3px var(--antRgc)"
-			0: \none
-			1: "var(--antRgi) 0 0 0 1px var(--antRgc)"
-			2: "var(--antRgi) 0 0 0 2px var(--antRgc)"
-			4: "var(--antRgi) 0 0 0 4px var(--antRgc)"
-			8: "var(--antRgi) 0 0 0 8px var(--antRgc)"
+		0: \none
+		1: "--antOo:1;box-shadow:0 0 0 1px var(--antOc)"
+		2: "--antOo:1;box-shadow:0 0 0 2px var(--antOc)"
+		"": "--antOo:1;box-shadow:0 0 0 3px var(--antOc)"
+		4: "--antOo:1;box-shadow:0 0 0 4px var(--antOc)"
+		8: "--antOo:1;box-shadow:0 0 0 8px var(--antOc)"
 	oc:
-		props \--antRgc,
+		props \--antOc,
 			tranCurColor
 		each colors, (k, v) ~>
-			"--antRgc:rgba(#v,var(--antRgo))"
+			"--antOc:rgba(#v,var(--antOo))"
 	oo:
-		props \--antRgo,
-			opacities
+		props \--antOo,
+			empty 50 opacities
 	pe:
 		props \pointer-events,
 			a: \auto
@@ -1005,7 +1006,7 @@ list =
 	rz:
 		props \resize,
 			b: \both
-			x: \horizontal
+			w: \horizontal
 			"": \vertical
 			n: \none
 	us:
@@ -1019,12 +1020,12 @@ list =
 		a: "-webkit-user-drag:auto;user-drag:auto"
 		"": "-webkit-user-drag:none;user-drag:none"
 	ar:
-		"": "--antAx:1;--antAy:1;aspect-ratio:var(--antAx)/var(--antAy)"
+		"": "--antAx:8;--antAy:8;aspect-ratio:var(--antAx)/var(--antAy)"
 	ax:
-		repeat 2 16 ~>
+		map [1 to 7] ++ [9 to 16] ~>
 			"--antAx:#it"
 	ay:
-		repeat 2 16 ~>
+		map [1 to 7] ++ [9 to 16] ~>
 			"--antAy:#it"
 
 css = '''
@@ -1039,7 +1040,7 @@ css = '''
 	fieldset{margin:0}
 	ul{list-style-type:square}
 	table{border-collapse:collapse}
-	@keyframes antAmRo{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+	@keyframes antAmRt{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 '''
 css .= replace /\n/g ""
 readme = '''
@@ -1084,6 +1085,7 @@ function handle bp, media
 	if bp
 		css += "@media(#media){"
 	for k1, v1 of list
+		k1 -= /_+$/
 		v1 = castArray v1
 		for v2 in v1
 			for k3, v3 of v2
