@@ -625,8 +625,8 @@ list =
 			__0025: \__.025em
 			__005: \__.05em
 	lh:
-		props \line-height,
-			spaces0[3 4 5 6 7 8 9 10]
+		each spaces3, (k, v) ~>
+			"line-height:#{v - /rem$/}"
 	lsst:
 		props \list-style-type,
 			n: \none
@@ -1017,7 +1017,7 @@ css = '''
 	:root{-moz-tab-size:2;tab-size:2}
 	*,*:before,*:after{box-sizing:border-box}
 	*{-webkit-tap-highlight-color:transparent}
-	html{line-height:1.25rem;-webkit-text-size-adjust:100%}
+	html{line-height:1.25;-webkit-text-size-adjust:100%}
 	body{margin:0;font-family:sans-serif}
 	small{font-size:80%}
 	button,input,select,textarea{font-family:inherit;font-size:100%}
