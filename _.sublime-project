@@ -7,6 +7,6 @@
 	"settings": {},
 	"build_systems": [{
 		"name": "Build",
-		"shell_cmd": "taskkill -f -im node.exe & lsc $folder/build"
+		"shell_cmd": "lsc $folder/build"
 	}]
 }

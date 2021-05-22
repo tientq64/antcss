@@ -628,6 +628,8 @@ list =
 			n: \none
 			ds: \disc
 			dm: \decimal
+			sq: \square
+			cr: \circle
 	lssp:
 		props \list-style-position,
 			in: \inside
@@ -642,9 +644,9 @@ list =
 		props \color,
 			trCc
 		each colors, (k, v) ~>
-			"--emCo:1;color:rgba(#v,var(--emCo))"
+			"--antCo:1;color:rgba(#v,var(--antCo))"
 	co:
-		props \--emCo,
+		props \--antCo,
 			opacities
 	td:
 		props \text-decoration,
@@ -697,10 +699,11 @@ list =
 	bgc:
 		props \background-color,
 			trCc
+			n: \none
 		each colors, (k, v) ~>
-			"--emBgo:1;background-color:rgba(#v,var(--emBgo))"
+			"--antBgo:1;background-color:rgba(#v,var(--antBgo))"
 	bgo:
-		props \--emBgo,
+		props \--antBgo,
 			opacities
 	bgp:
 		props \background-position,
@@ -796,9 +799,9 @@ list =
 		props \border-color,
 			trCc
 		each colors, (k, v) ~>
-			"--emBdo:1;border-color:rgba(#v,var(--emBdo))"
+			"--antBdo:1;border-color:rgba(#v,var(--antBdo))"
 	bdo:
-		props \--emBdo,
+		props \--antBdo,
 			opacities
 	bds:
 		props \border-style,
@@ -809,19 +812,19 @@ list =
 	rg:
 		props \box-shadow,
 			n: \none
-			"": "var(--emRgi) 0 0 0 3px var(--emRgc)"
-			0: "var(--emRgi) 0 0 0 0 var(--emRgc)"
-			1: "var(--emRgi) 0 0 0 1px var(--emRgc)"
-			2: "var(--emRgi) 0 0 0 2px var(--emRgc)"
-			4: "var(--emRgi) 0 0 0 4px var(--emRgc)"
-			8: "var(--emRgi) 0 0 0 8px var(--emRgc)"
+			"": "var(--antRgi) 0 0 0 3px var(--antRgc)"
+			0: "var(--antRgi) 0 0 0 0 var(--antRgc)"
+			1: "var(--antRgi) 0 0 0 1px var(--antRgc)"
+			2: "var(--antRgi) 0 0 0 2px var(--antRgc)"
+			4: "var(--antRgi) 0 0 0 4px var(--antRgc)"
+			8: "var(--antRgi) 0 0 0 8px var(--antRgc)"
 	rgc:
-		props \--emRgc,
+		props \--antRgc,
 			trCc
 		each colors, (k, v) ~>
-			"--emRgc:rgba(#v,var(--emRgo))"
+			"--antRgc:rgba(#v,var(--antRgo))"
 	rgo:
-		props \--emRgo,
+		props \--antRgo,
 			opacities
 	bsh:
 		props \box-shadow,
@@ -844,35 +847,35 @@ list =
 			blends
 	ft:
 		props \filter,
-			"": "var(--emFtBl) var(--emFtBr) var(--emFtCt) var(--emFtGs) var(--emFtHe) var(--emFtIv) var(--emFtSa) var(--emFtSp)"
+			"": "var(--antFtBl) var(--antFtBr) var(--antFtCt) var(--antFtGs) var(--antFtHe) var(--antFtIv) var(--antFtSa) var(--antFtSp)"
 			n: \none
 	ftBl:
-		0: "--emFtBl:blur(0)"
+		0: "--antFtBl:blur(0)"
 		map [4 8 12 16 24 40 64] 8 ~>
-			"--emFtBl:blur(#{it}px)"
+			"--antFtBl:blur(#{it}px)"
 	ftBr:
 		map [0 50 75 90 95 100 105 110 125 150 200] ~>
-			"--emFtBr:brightness(#{float it / 100})"
+			"--antFtBr:brightness(#{float it / 100})"
 	ftCt:
 		map [0 50 75 100 125 150 200] ~>
-			"--emFtCt:contrast(#{float it / 100})"
+			"--antFtCt:contrast(#{float it / 100})"
 	ftGs:
 		map [0 1] 1 ~>
-			"--emFtGs:grayscale(#it)"
+			"--antFtGs:grayscale(#it)"
 	ftHe:
 		map [0 15 30 60 90 180] ~>
-			"--emFtHe:hue-rotate(#{it}deg)"
+			"--antFtHe:hue-rotate(#{it}deg)"
 		map [15 30 60 90 180] ~>
-			["__#it" "--emFtHe:hue-rotate(-#{it}deg)"]
+			["__#it" "--antFtHe:hue-rotate(-#{it}deg)"]
 	ftIv:
 		map [0 1] 1 ~>
-			"--emFtIv:invert(#it)"
+			"--antFtIv:invert(#it)"
 	ftSa:
 		map [0 50 100 150 200] ~>
-			"--emFtSa:saturate(#{float it / 100})"
+			"--antFtSa:saturate(#{float it / 100})"
 	ftSp:
 		map [0 1] 1 ~>
-			"--emFtSp:sepia(#it)"
+			"--antFtSp:sepia(#it)"
 	bdcl:
 		props \border-collapse,
 			cl: \collapse
@@ -903,35 +906,35 @@ list =
 			"transition-delay:#{float it / 1000}s"
 	am:
 		props \animation,
-			rt: "emAmRo 1s linear infinite"
+			rt: "antAmRo 1s linear infinite"
 			n: \none
 	tf:
-		"": "--emTftx:0;--emTfty:0;--emTfr:0;--emTfkx:0;--emTfky:0;--emTfsx:1;--emTfsy:1;transform:translate(var(--emTftx),var(--emTfty))rotate(var(--emTfr))skew(var(--emTfkx),var(--emTfky))scale(var(--emTfsx),var(--emTfsy))"
-		"3d": "--emTftx:0;--emTfty:0;--emTfr:0;--emTfkx:0;--emTfky:0;--emTfsx:1;--emTfsy:1;transform:translate3d(var(--emTftx),var(--emTfty),0)rotate(var(--emTfr))skew(var(--emTfkx),var(--emTfky))scale(var(--emTfsx),var(--emTfsy))"
+		"": "--antTftx:0;--antTfty:0;--antTfr:0;--antTfkx:0;--antTfky:0;--antTfsx:1;--antTfsy:1;transform:translate(var(--antTftx),var(--antTfty))rotate(var(--antTfr))skew(var(--antTfkx),var(--antTfky))scale(var(--antTfsx),var(--antTfsy))"
+		"3d": "--antTftx:0;--antTfty:0;--antTfr:0;--antTfkx:0;--antTfky:0;--antTfsx:1;--antTfsy:1;transform:translate3d(var(--antTftx),var(--antTfty),0)rotate(var(--antTfr))skew(var(--antTfkx),var(--antTfky))scale(var(--antTfsx),var(--antTfsy))"
 		n: \transform:none
 	tfs:
-		props [\--emTfsx \--emTfsy],
+		props [\--antTfsx \--antTfsy],
 			map [0 50 75 90 95 100 105 110 125 150] ~>
 				float it / 100
 	tfsx:
 		map [0 50 75 90 95 100 105 110 125 150] ~>
-			"--emTfsx:#{float it / 100}"
+			"--antTfsx:#{float it / 100}"
 	tfsy:
 		map [0 50 75 90 95 100 105 110 125 150] ~>
-			"--emTfsy:#{float it / 100}"
+			"--antTfsy:#{float it / 100}"
 	tfr:
 		map [0 45 90 135 180] ~>
-			"--emTfr:#{unit it, \deg}"
+			"--antTfr:#{unit it, \deg}"
 		map [45 90 135 180] ~>
-			"__#it": "--emTfr:-#{unit it, \deg}"
+			"__#it": "--antTfr:-#{unit it, \deg}"
 	tftx:
-		props \--emTftx,
+		props \--antTftx,
 			spaces0
 			negate spacesP
 			percents4
 			negate percents4
 	tfty:
-		props \--emTfty,
+		props \--antTfty,
 			spaces0
 			negate spacesP
 			percents4
@@ -939,15 +942,85 @@ list =
 	tfo:
 		props \transform-origin,
 			positions
+	tfkx:
+		map [0 1 2 3 6 12] ~>
+			"--antTfkx:#{unit it, \deg}"
+		map [1 2 3 6 12] ~>
+			"__#it": "--antTfkx:-#{unit it, \deg}"
+	tfky:
+		map [0 1 2 3 6 12] ~>
+			"--antTfky:#{unit it, \deg}"
+		map [1 2 3 6 12] ~>
+			"__#it": "--antTfky:-#{unit it, \deg}"
+	ap:
+		props \appearance,
+			n: \none
+	cs:
+		props \cursor,
+			a: \auto
+			df: \default
+			pt: \pointer
+			wt: \wait
+			tx: \text
+			mv: \move
+			he: \help
+			na: \not-allowed
+			zi: \zoom-in
+			zo: \zoom-out
+			cp: \copy
+			ch: \crosshair
+			gr: \grab
+			gb: \grabing
+	ol:
+		props \outline,
+			n: \none
+	pe:
+		props \pointer-events,
+			n: \none
+			a: \auto
+	rz:
+		props \resize,
+			n: \none
+			x: \horizontal
+			y: \vertical
+			bo: \both
+	us:
+		props \user-select,
+			n: \none
+			tx: \text
+			al: \all
+			a: \auto
+	ar:
+		"": "--antArx:1;--antAry:1;aspect-ratio:var(--antArx)/var(--antAry)"
+	arx:
+		repeat 2 16 ~>
+			"--antArx:#it"
+	ary:
+		repeat 2 16 ~>
+			"--antAry:#it"
 
-css = "@keyframes emAmRo{from{transform:rotate(0)}to{transform:rotate(360deg)}}"
-readme = """
+css = '''
+	:root{-moz-tab-size:2;tab-size:2}
+	*,*:before,*:after{box-sizing:border-box}
+	*{-webkit-tap-highlight-color:transparent}
+	html{line-height:1.25rem;-webkit-text-size-adjust:100%}
+	body{margin:0;font-family:sans-serif}
+	small{font-size:80%}
+	button,input,select,textarea{font-family:inherit;font-size:100%}
+	textarea{resize:vertical}
+	fieldset{margin:0}
+	ul{list-style-type:square}
+	table{border-collapse:collapse}
+	@keyframes antAmRo{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+'''
+css .= replace /\n/g ""
+readme = '''
 	# AntCSS :ant:
 
 	Utility CSS framework with abbreviated class names.
 
 	> AntCSS is like ants, small and many but powerful.<br>
-	> AntCSS inspired by [Emmet](https://github.com/emmetio/emmet).
+	> AntCSS inspired by [Emmet](https://github.com/emmetio/emmet) and [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss).
 
 	## Usage
 
@@ -961,9 +1034,9 @@ readme = """
 
 	[sign](): As sign "-" if the value is negative
 	
-	[breakpoint](\#breakpoints): If defined, it will apply exactly that breakpoint
+	[breakpoint](#breakpoints): If defined, it will apply exactly that breakpoint
 	
-	[class](\#classes): Class
+	[class](#classes): Class
 
 	## Breakpoints
 
@@ -977,7 +1050,7 @@ readme = """
 
 	Class | CSS
 	----- | ---
-"""
+'''
 
 function handle bp, media
 	if bp

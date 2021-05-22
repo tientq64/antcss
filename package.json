@@ -1,14 +1,17 @@
 {
 	"name": "antcss",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Utility CSS framework with abbreviated class names",
 	"main": "ant.css",
 	"author": "tiencoffee",
+	"keywords": ["css", "framework", "utility", "class"],
+	"homepage": "https://github.com/tiencoffee/antcss",
+	"repository": "github:tiencoffee/antcss",
 	"license": "MIT",
+	"files": [
+		"ant.css"
+	],
 	"scripts": {
-		"build": "lsc build"
-	},
-	"devDependencies": {
-		"livescript": ""
+		"build": "npx lsc build"
 	}
 }
