@@ -12,6 +12,7 @@ negate = (target) ->
 	obj
 
 empty = (key, target) ->
+	key += ""
 	obj = {...target}
 	for k of obj
 		ks = k.split " "

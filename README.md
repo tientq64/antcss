@@ -103,7 +103,6 @@ Class | CSS
 `ps` | position: static;
 `psY` | position: sticky;
 `i` | inset: 0;
-`t0` | top: 0;
 `t1` | top: .25rem;
 `t2` | top: .5rem;
 `t3` | top: .75rem;
@@ -129,6 +128,7 @@ Class | CSS
 `t30` | top: 7.5rem;
 `t32` | top: 8rem;
 `tP` | top: 1px;
+`t` | top: 0;
 `-t1` | top: -.25rem;
 `-t2` | top: -.5rem;
 `-t3` | top: -.75rem;
@@ -163,7 +163,6 @@ Class | CSS
 `-t-9` | top: -75%;
 `-tF` | top: -100%;
 `tA` | top: auto;
-`r0` | right: 0;
 `r1` | right: .25rem;
 `r2` | right: .5rem;
 `r3` | right: .75rem;
@@ -189,6 +188,7 @@ Class | CSS
 `r30` | right: 7.5rem;
 `r32` | right: 8rem;
 `rP` | right: 1px;
+`r` | right: 0;
 `-r1` | right: -.25rem;
 `-r2` | right: -.5rem;
 `-r3` | right: -.75rem;
@@ -223,7 +223,6 @@ Class | CSS
 `-r-9` | right: -75%;
 `-rF` | right: -100%;
 `rA` | right: auto;
-`b0` | bottom: 0;
 `b1` | bottom: .25rem;
 `b2` | bottom: .5rem;
 `b3` | bottom: .75rem;
@@ -249,6 +248,7 @@ Class | CSS
 `b30` | bottom: 7.5rem;
 `b32` | bottom: 8rem;
 `bP` | bottom: 1px;
+`b` | bottom: 0;
 `-b1` | bottom: -.25rem;
 `-b2` | bottom: -.5rem;
 `-b3` | bottom: -.75rem;
@@ -283,7 +283,6 @@ Class | CSS
 `-b-9` | bottom: -75%;
 `-bF` | bottom: -100%;
 `bA` | bottom: auto;
-`l0` | left: 0;
 `l1` | left: .25rem;
 `l2` | left: .5rem;
 `l3` | left: .75rem;
@@ -309,6 +308,7 @@ Class | CSS
 `l30` | left: 7.5rem;
 `l32` | left: 8rem;
 `lP` | left: 1px;
+`l` | left: 0;
 `-l1` | left: -.25rem;
 `-l2` | left: -.5rem;
 `-l3` | left: -.75rem;
@@ -439,7 +439,6 @@ Class | CSS
 `gx12` | grid-column: span 12/span 12;
 `gx` | grid-column: 1/-1;
 `gxA` | grid-column: auto;
-`gs1` | grid-column-start: 1;
 `gs2` | grid-column-start: 2;
 `gs3` | grid-column-start: 3;
 `gs4` | grid-column-start: 4;
@@ -452,6 +451,7 @@ Class | CSS
 `gs11` | grid-column-start: 11;
 `gs12` | grid-column-start: 12;
 `gs13` | grid-column-start: 13;
+`gs` | grid-column-start: 1;
 `gsA` | grid-column-start: auto;
 `ge1` | grid-column-end: 1;
 `ge2` | grid-column-end: 2;
@@ -465,7 +465,7 @@ Class | CSS
 `ge10` | grid-column-end: 10;
 `ge11` | grid-column-end: 11;
 `ge12` | grid-column-end: 12;
-`ge13` | grid-column-end: 13;
+`ge` | grid-column-end: 13;
 `geA` | grid-column-end: auto;
 `gy1` | grid-row: span 1/span 1;
 `gy2` | grid-row: span 2/span 2;
@@ -475,13 +475,13 @@ Class | CSS
 `gy6` | grid-row: span 6/span 6;
 `gy` | grid-row: 1/-1;
 `gyA` | grid-row: auto;
-`gys1` | grid-row-start: 1;
 `gys2` | grid-row-start: 2;
 `gys3` | grid-row-start: 3;
 `gys4` | grid-row-start: 4;
 `gys5` | grid-row-start: 5;
 `gys6` | grid-row-start: 6;
 `gys7` | grid-row-start: 7;
+`gys` | grid-row-start: 1;
 `gysA` | grid-row-start: auto;
 `gye1` | grid-row-end: 1;
 `gye2` | grid-row-end: 2;
@@ -489,7 +489,7 @@ Class | CSS
 `gye4` | grid-row-end: 4;
 `gye5` | grid-row-end: 5;
 `gye6` | grid-row-end: 6;
-`gye7` | grid-row-end: 7;
+`gye` | grid-row-end: 7;
 `gyeA` | grid-row-end: auto;
 `ga1` | grid-auto-columns: 83.33333%;
 `ga2` | grid-auto-columns: 66.66667%;
@@ -629,7 +629,6 @@ Class | CSS
 `p0` | padding: 0;
 `p1` | padding: .25rem;
 `p2` | padding: .5rem;
-`p3` | padding: .75rem;
 `p4` | padding: 1rem;
 `p5` | padding: 1.25rem;
 `p6` | padding: 1.5rem;
@@ -652,10 +651,10 @@ Class | CSS
 `p30` | padding: 7.5rem;
 `p32` | padding: 8rem;
 `pP` | padding: 1px;
+`p` | padding: .75rem;
 `px0` | padding-left: 0;<br>padding-right: 0;
 `px1` | padding-left: .25rem;<br>padding-right: .25rem;
 `px2` | padding-left: .5rem;<br>padding-right: .5rem;
-`px3` | padding-left: .75rem;<br>padding-right: .75rem;
 `px4` | padding-left: 1rem;<br>padding-right: 1rem;
 `px5` | padding-left: 1.25rem;<br>padding-right: 1.25rem;
 `px6` | padding-left: 1.5rem;<br>padding-right: 1.5rem;
@@ -678,10 +677,10 @@ Class | CSS
 `px30` | padding-left: 7.5rem;<br>padding-right: 7.5rem;
 `px32` | padding-left: 8rem;<br>padding-right: 8rem;
 `pxP` | padding-left: 1px;<br>padding-right: 1px;
+`px` | padding-left: .75rem;<br>padding-right: .75rem;
 `py0` | padding-top: 0;<br>padding-bottom: 0;
 `py1` | padding-top: .25rem;<br>padding-bottom: .25rem;
 `py2` | padding-top: .5rem;<br>padding-bottom: .5rem;
-`py3` | padding-top: .75rem;<br>padding-bottom: .75rem;
 `py4` | padding-top: 1rem;<br>padding-bottom: 1rem;
 `py5` | padding-top: 1.25rem;<br>padding-bottom: 1.25rem;
 `py6` | padding-top: 1.5rem;<br>padding-bottom: 1.5rem;
@@ -704,10 +703,10 @@ Class | CSS
 `py30` | padding-top: 7.5rem;<br>padding-bottom: 7.5rem;
 `py32` | padding-top: 8rem;<br>padding-bottom: 8rem;
 `pyP` | padding-top: 1px;<br>padding-bottom: 1px;
+`py` | padding-top: .75rem;<br>padding-bottom: .75rem;
 `pt0` | padding-top: 0;
 `pt1` | padding-top: .25rem;
 `pt2` | padding-top: .5rem;
-`pt3` | padding-top: .75rem;
 `pt4` | padding-top: 1rem;
 `pt5` | padding-top: 1.25rem;
 `pt6` | padding-top: 1.5rem;
@@ -730,10 +729,10 @@ Class | CSS
 `pt30` | padding-top: 7.5rem;
 `pt32` | padding-top: 8rem;
 `ptP` | padding-top: 1px;
+`pt` | padding-top: .75rem;
 `pr0` | padding-right: 0;
 `pr1` | padding-right: .25rem;
 `pr2` | padding-right: .5rem;
-`pr3` | padding-right: .75rem;
 `pr4` | padding-right: 1rem;
 `pr5` | padding-right: 1.25rem;
 `pr6` | padding-right: 1.5rem;
@@ -756,10 +755,10 @@ Class | CSS
 `pr30` | padding-right: 7.5rem;
 `pr32` | padding-right: 8rem;
 `prP` | padding-right: 1px;
+`pr` | padding-right: .75rem;
 `pb0` | padding-bottom: 0;
 `pb1` | padding-bottom: .25rem;
 `pb2` | padding-bottom: .5rem;
-`pb3` | padding-bottom: .75rem;
 `pb4` | padding-bottom: 1rem;
 `pb5` | padding-bottom: 1.25rem;
 `pb6` | padding-bottom: 1.5rem;
@@ -782,10 +781,10 @@ Class | CSS
 `pb30` | padding-bottom: 7.5rem;
 `pb32` | padding-bottom: 8rem;
 `pbP` | padding-bottom: 1px;
+`pb` | padding-bottom: .75rem;
 `pl0` | padding-left: 0;
 `pl1` | padding-left: .25rem;
 `pl2` | padding-left: .5rem;
-`pl3` | padding-left: .75rem;
 `pl4` | padding-left: 1rem;
 `pl5` | padding-left: 1.25rem;
 `pl6` | padding-left: 1.5rem;
@@ -808,10 +807,10 @@ Class | CSS
 `pl30` | padding-left: 7.5rem;
 `pl32` | padding-left: 8rem;
 `plP` | padding-left: 1px;
+`pl` | padding-left: .75rem;
 `m0` | margin: 0;
 `m1` | margin: .25rem;
 `m2` | margin: .5rem;
-`m3` | margin: .75rem;
 `m4` | margin: 1rem;
 `m5` | margin: 1.25rem;
 `m6` | margin: 1.5rem;
@@ -834,6 +833,7 @@ Class | CSS
 `m30` | margin: 7.5rem;
 `m32` | margin: 8rem;
 `mP` | margin: 1px;
+`m` | margin: .75rem;
 `-m1` | margin: -.25rem;
 `-m2` | margin: -.5rem;
 `-m3` | margin: -.75rem;
@@ -863,7 +863,6 @@ Class | CSS
 `mx0` | margin-left: 0;<br>margin-right: 0;
 `mx1` | margin-left: .25rem;<br>margin-right: .25rem;
 `mx2` | margin-left: .5rem;<br>margin-right: .5rem;
-`mx3` | margin-left: .75rem;<br>margin-right: .75rem;
 `mx4` | margin-left: 1rem;<br>margin-right: 1rem;
 `mx5` | margin-left: 1.25rem;<br>margin-right: 1.25rem;
 `mx6` | margin-left: 1.5rem;<br>margin-right: 1.5rem;
@@ -886,6 +885,7 @@ Class | CSS
 `mx30` | margin-left: 7.5rem;<br>margin-right: 7.5rem;
 `mx32` | margin-left: 8rem;<br>margin-right: 8rem;
 `mxP` | margin-left: 1px;<br>margin-right: 1px;
+`mx` | margin-left: .75rem;<br>margin-right: .75rem;
 `-mx1` | margin-left: -.25rem;<br>margin-right: -.25rem;
 `-mx2` | margin-left: -.5rem;<br>margin-right: -.5rem;
 `-mx3` | margin-left: -.75rem;<br>margin-right: -.75rem;
@@ -915,7 +915,6 @@ Class | CSS
 `my0` | margin-top: 0;<br>margin-bottom: 0;
 `my1` | margin-top: .25rem;<br>margin-bottom: .25rem;
 `my2` | margin-top: .5rem;<br>margin-bottom: .5rem;
-`my3` | margin-top: .75rem;<br>margin-bottom: .75rem;
 `my4` | margin-top: 1rem;<br>margin-bottom: 1rem;
 `my5` | margin-top: 1.25rem;<br>margin-bottom: 1.25rem;
 `my6` | margin-top: 1.5rem;<br>margin-bottom: 1.5rem;
@@ -938,6 +937,7 @@ Class | CSS
 `my30` | margin-top: 7.5rem;<br>margin-bottom: 7.5rem;
 `my32` | margin-top: 8rem;<br>margin-bottom: 8rem;
 `myP` | margin-top: 1px;<br>margin-bottom: 1px;
+`my` | margin-top: .75rem;<br>margin-bottom: .75rem;
 `-my1` | margin-top: -.25rem;<br>margin-bottom: -.25rem;
 `-my2` | margin-top: -.5rem;<br>margin-bottom: -.5rem;
 `-my3` | margin-top: -.75rem;<br>margin-bottom: -.75rem;
@@ -967,7 +967,6 @@ Class | CSS
 `mt0` | margin-top: 0;
 `mt1` | margin-top: .25rem;
 `mt2` | margin-top: .5rem;
-`mt3` | margin-top: .75rem;
 `mt4` | margin-top: 1rem;
 `mt5` | margin-top: 1.25rem;
 `mt6` | margin-top: 1.5rem;
@@ -990,6 +989,7 @@ Class | CSS
 `mt30` | margin-top: 7.5rem;
 `mt32` | margin-top: 8rem;
 `mtP` | margin-top: 1px;
+`mt` | margin-top: .75rem;
 `-mt1` | margin-top: -.25rem;
 `-mt2` | margin-top: -.5rem;
 `-mt3` | margin-top: -.75rem;
@@ -1019,7 +1019,6 @@ Class | CSS
 `mr0` | margin-right: 0;
 `mr1` | margin-right: .25rem;
 `mr2` | margin-right: .5rem;
-`mr3` | margin-right: .75rem;
 `mr4` | margin-right: 1rem;
 `mr5` | margin-right: 1.25rem;
 `mr6` | margin-right: 1.5rem;
@@ -1042,6 +1041,7 @@ Class | CSS
 `mr30` | margin-right: 7.5rem;
 `mr32` | margin-right: 8rem;
 `mrP` | margin-right: 1px;
+`mr` | margin-right: .75rem;
 `-mr1` | margin-right: -.25rem;
 `-mr2` | margin-right: -.5rem;
 `-mr3` | margin-right: -.75rem;
@@ -1071,7 +1071,6 @@ Class | CSS
 `mb0` | margin-bottom: 0;
 `mb1` | margin-bottom: .25rem;
 `mb2` | margin-bottom: .5rem;
-`mb3` | margin-bottom: .75rem;
 `mb4` | margin-bottom: 1rem;
 `mb5` | margin-bottom: 1.25rem;
 `mb6` | margin-bottom: 1.5rem;
@@ -1094,6 +1093,7 @@ Class | CSS
 `mb30` | margin-bottom: 7.5rem;
 `mb32` | margin-bottom: 8rem;
 `mbP` | margin-bottom: 1px;
+`mb` | margin-bottom: .75rem;
 `-mb1` | margin-bottom: -.25rem;
 `-mb2` | margin-bottom: -.5rem;
 `-mb3` | margin-bottom: -.75rem;
@@ -1123,7 +1123,6 @@ Class | CSS
 `ml0` | margin-left: 0;
 `ml1` | margin-left: .25rem;
 `ml2` | margin-left: .5rem;
-`ml3` | margin-left: .75rem;
 `ml4` | margin-left: 1rem;
 `ml5` | margin-left: 1.25rem;
 `ml6` | margin-left: 1.5rem;
@@ -1146,6 +1145,7 @@ Class | CSS
 `ml30` | margin-left: 7.5rem;
 `ml32` | margin-left: 8rem;
 `mlP` | margin-left: 1px;
+`ml` | margin-left: .75rem;
 `-ml1` | margin-left: -.25rem;
 `-ml2` | margin-left: -.5rem;
 `-ml3` | margin-left: -.75rem;
@@ -1451,9 +1451,9 @@ Class | CSS
 `fw4` | font-weight: 400;
 `fw5` | font-weight: 500;
 `fw6` | font-weight: 600;
-`fw7` | font-weight: 700;
 `fw8` | font-weight: 800;
 `fw9` | font-weight: 900;
+`fw` | font-weight: 700;
 `ls1` | letter-spacing: .025em;
 `ls2` | letter-spacing: .05em;
 `ls3` | letter-spacing: .1em;
@@ -1559,11 +1559,11 @@ Class | CSS
 `tc` | -webkit-text-security: square;<br>text-security: square;
 `tcN` | -webkit-text-security: none;<br>text-security: none;
 `lc1` | display: -webkit-box;<br>overflow: hidden;<br>-webkit-box-orient: vertical;<br>-webkit-line-clamp: 1;
-`lc2` | display: -webkit-box;<br>overflow: hidden;<br>-webkit-box-orient: vertical;<br>-webkit-line-clamp: 2;
 `lc3` | display: -webkit-box;<br>overflow: hidden;<br>-webkit-box-orient: vertical;<br>-webkit-line-clamp: 3;
 `lc4` | display: -webkit-box;<br>overflow: hidden;<br>-webkit-box-orient: vertical;<br>-webkit-line-clamp: 4;
 `lc5` | display: -webkit-box;<br>overflow: hidden;<br>-webkit-box-orient: vertical;<br>-webkit-line-clamp: 5;
 `lc6` | display: -webkit-box;<br>overflow: hidden;<br>-webkit-box-orient: vertical;<br>-webkit-line-clamp: 6;
+`lc` | display: -webkit-box;<br>overflow: hidden;<br>-webkit-box-orient: vertical;<br>-webkit-line-clamp: 2;
 `vaT` | vertical-align: top;
 `vaP` | vertical-align: text-top;
 `va` | vertical-align: middle;
@@ -1647,7 +1647,6 @@ Class | CSS
 `bgo25` | --antBgo: .25;
 `bgo30` | --antBgo: .3;
 `bgo40` | --antBgo: .4;
-`bgo50` | --antBgo: .5;
 `bgo60` | --antBgo: .6;
 `bgo70` | --antBgo: .7;
 `bgo75` | --antBgo: .75;
@@ -1655,6 +1654,7 @@ Class | CSS
 `bgo90` | --antBgo: .9;
 `bgo95` | --antBgo: .95;
 `bgo100` | --antBgo: 1;
+`bgo` | --antBgo: .5;
 `bgpT` | background-position: top;
 `bgpR` | background-position: right;
 `bgpB` | background-position: bottom;
@@ -1833,7 +1833,6 @@ Class | CSS
 `bo25` | --antBo: .25;
 `bo30` | --antBo: .3;
 `bo40` | --antBo: .4;
-`bo50` | --antBo: .5;
 `bo60` | --antBo: .6;
 `bo70` | --antBo: .7;
 `bo75` | --antBo: .75;
@@ -1841,6 +1840,7 @@ Class | CSS
 `bo90` | --antBo: .9;
 `bo95` | --antBo: .95;
 `bo100` | --antBo: 1;
+`bo` | --antBo: .5;
 `bs` | border-style: solid;
 `bsD` | border-style: dashed;
 `bsO` | border-style: dotted;
@@ -1860,7 +1860,6 @@ Class | CSS
 `o25` | opacity: .25;
 `o30` | opacity: .3;
 `o40` | opacity: .4;
-`o50` | opacity: .5;
 `o60` | opacity: .6;
 `o70` | opacity: .7;
 `o75` | opacity: .75;
@@ -1868,6 +1867,7 @@ Class | CSS
 `o90` | opacity: .9;
 `o95` | opacity: .95;
 `o100` | opacity: 1;
+`o` | opacity: .5;
 `bmY` | mix-blend-mode: multiply;
 `bmR` | mix-blend-mode: screen;
 `bmO` | mix-blend-mode: overlay;
@@ -1904,12 +1904,12 @@ Class | CSS
 `ftN` | filter: none;
 `ftL0` | --antFtL: blur(0);
 `ftL4` | --antFtL: blur(4px);
-`ftL8` | --antFtL: blur(8px);
 `ftL12` | --antFtL: blur(12px);
 `ftL16` | --antFtL: blur(16px);
 `ftL24` | --antFtL: blur(24px);
 `ftL40` | --antFtL: blur(40px);
 `ftL64` | --antFtL: blur(64px);
+`ftL` | --antFtL: blur(8px);
 `ftB0` | --antFtB: brightness(0);
 `ftB50` | --antFtB: brightness(.5);
 `ftB75` | --antFtB: brightness(.75);
@@ -1929,7 +1929,7 @@ Class | CSS
 `ftC150` | --antFtC: contrast(1.5);
 `ftC200` | --antFtC: contrast(2);
 `ftG0` | --antFtG: grayscale(0);
-`ftG1` | --antFtG: grayscale(1);
+`ftG` | --antFtG: grayscale(1);
 `ftH0` | --antFtH: hue-rotate(0deg);
 `ftH15` | --antFtH: hue-rotate(15deg);
 `ftH30` | --antFtH: hue-rotate(30deg);
@@ -1939,14 +1939,14 @@ Class | CSS
 `ftH0` | -180;
 `ftH1` | --antFtH: hue-rotate(-180deg);
 `ftI0` | --antFtI: invert(0);
-`ftI1` | --antFtI: invert(1);
+`ftI` | --antFtI: invert(1);
 `ftS0` | --antFtS: saturate(0);
 `ftS50` | --antFtS: saturate(.5);
 `ftS100` | --antFtS: saturate(1);
 `ftS150` | --antFtS: saturate(1.5);
 `ftS200` | --antFtS: saturate(2);
 `ftP0` | --antFtP: sepia(0);
-`ftP1` | --antFtP: sepia(1);
+`ftP` | --antFtP: sepia(1);
 `bpC` | border-collapse: collapse;
 `bp` | border-collapse: separate;
 `tlA` | table-layout: auto;
@@ -1960,12 +1960,12 @@ Class | CSS
 `tsN` | transition: none;
 `tsd75` | transition-duration: .075s;
 `tsd100` | transition-duration: .1s;
-`tsd150` | transition-duration: .15s;
 `tsd200` | transition-duration: .2s;
 `tsd300` | transition-duration: .3s;
 `tsd500` | transition-duration: .5s;
 `tsd700` | transition-duration: .7s;
 `tsd1000` | transition-duration: 1s;
+`tsd` | transition-duration: .15s;
 `tstL` | transition-timing-function: linear;
 `tst` | transition-timing-function: cubic-bezier(.08,.69,.23,.94);
 `tstI` | transition-timing-function: cubic-bezier(.77,.06,.92,.31);
@@ -2255,7 +2255,6 @@ Class | CSS
 `oo25` | --antOo: .25;
 `oo30` | --antOo: .3;
 `oo40` | --antOo: .4;
-`oo50` | --antOo: .5;
 `oo60` | --antOo: .6;
 `oo70` | --antOo: .7;
 `oo75` | --antOo: .75;
@@ -2263,6 +2262,7 @@ Class | CSS
 `oo90` | --antOo: .9;
 `oo95` | --antOo: .95;
 `oo100` | --antOo: 1;
+`oo` | --antOo: .5;
 `peA` | pointer-events: auto;
 `pe` | pointer-events: none;
 `rzB` | resize: both;
