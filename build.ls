@@ -754,39 +754,39 @@ list =
 			"": \none
 	br:
 		props \border-radius,
-			spaces0[0 1 2 3 4 5 6]
+			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
 	brt:
 		props [\border-top-left-radius \border-top-right-radius],
-			spaces0[0 1 2 3 4 5 6]
+			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
 	brr:
 		props [\border-top-right-radius \border-bottom-right-radius],
-			spaces0[0 1 2 3 4 5 6]
+			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
 	brb:
 		props [\border-bottom-right-radius \border-bottom-left-radius],
-			spaces0[0 1 2 3 4 5 6]
+			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
 	brl:
 		props [\border-top-left-radius \border-bottom-left-radius],
-			spaces0[0 1 2 3 4 5 6]
+			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
 	btl:
 		props \border-top-left-radius,
-			spaces0[0 1 2 3 4 5 6]
+			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
 	btr:
 		props \border-top-right-radius,
-			spaces0[0 1 2 3 4 5 6]
+			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
 	bbr:
 		props \border-bottom-right-radius,
-			spaces0[0 1 2 3 4 5 6]
+			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
 	bbl:
 		props \border-bottom-left-radius,
-			spaces0[0 1 2 3 4 5 6]
+			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
 	bw:
 		props \border-width,
