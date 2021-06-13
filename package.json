@@ -1,10 +1,10 @@
 {
 	"name": "antcss",
-	"version": "3.0.5",
+	"version": "4.0.0",
 	"description": "Utility CSS framework with abbreviated class names",
 	"main": "ant.min.css",
 	"author": "tiencoffee",
-	"keywords": ["css", "framework", "utility", "class"],
+	"keywords": ["css", "abbr", "class", "tailwind", "emmet"],
 	"homepage": "https://github.com/tiencoffee/antcss",
 	"repository": "github:tiencoffee/antcss",
 	"license": "MIT",

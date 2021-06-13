@@ -1,6 +1,11 @@
 require! {fs, dayjs}
 process.chdir __dirname
 
+upperFirst = (str) ->
+	if str += ""
+		str.0.toUpperCase! + str.substring 1
+	else str
+
 negate = (target) ->
 	obj = {}
 	for k, val of target
@@ -54,6 +59,13 @@ each = (target, mapFn) ->
 	obj = {}
 	for k, val of target
 		obj[k] = mapFn k, val
+	obj
+
+upperKey = (target) ->
+	obj = {}
+	for k, val of target
+		k = upperFirst k
+		obj[k] = val
 	obj
 
 eachStr = (target, chrJoin, mapFn) ->
@@ -247,6 +259,8 @@ blends =
 	u: \luminosity
 
 list =
+	_______:
+		"tW,bW,lH,rH": "position:absolute"
 	"":
 		k: \display:block
 		i: \display:inline-block
@@ -270,16 +284,16 @@ list =
 		"ig,igC,igCd,igR,igRd": \display:inline-grid
 	bk:
 		props \box-decoration-break,
-			"": \slice
-			c: \clone
-	bz:
+			s: \slice
+			"": \clone
+	bx:
 		props \box-sizing,
-			"": \border-box
-			c: \content-box
+			b: \border-box
+			"": \content-box
 	fl:
 		props \float,
-			"": \right
-			l: \left
+			"": \left
+			r: \right
 			n: \none
 	cl:
 		props \clear,
@@ -341,8 +355,9 @@ list =
 		props \scroll-behavior,
 			"": \smooth
 			a: \auto
-		"n::-webkit-scrollbar": "display:none"
-		n: "scrollbar-width:none"
+	sw:
+		"::-webkit-scrollbar": "display:none"
+		"": "scrollbar-width:none"
 	t:
 		props \top,
 			empty 0 spaces0
@@ -350,6 +365,7 @@ list =
 			percents4
 			negate percents4
 			a: \auto
+			w: 0
 	r:
 		props \right,
 			empty 0 spaces0
@@ -357,6 +373,7 @@ list =
 			percents4
 			negate percents4
 			a: \auto
+			h: 0
 	b:
 		props \bottom,
 			empty 0 spaces0
@@ -364,6 +381,7 @@ list =
 			percents4
 			negate percents4
 			a: \auto
+			w: 0
 	l:
 		props \left,
 			empty 0 spaces0
@@ -371,6 +389,7 @@ list =
 			percents4
 			negate percents4
 			a: \auto
+			h: 0
 	v_:
 		props \visibility,
 			v: \visible
@@ -385,11 +404,14 @@ list =
 			5: 5
 			"__1": -1
 			a: \auto
+	______:
+		"jH>*": "flex-grow:1"
+		"j1>*": "flex:1"
 	f:
 		props \flex,
-			1: "1 1 0"
-			a: "1 1 auto"
-			i: "0 1 auto"
+			1: 1
+			a: \auto
+			i: \initial
 			n: \none
 		props \flex-direction,
 			r: \row
@@ -749,29 +771,33 @@ list =
 			"": \break-word
 			b: \break-all
 			k: \keep-all
-	da:
+	d_:
+		props \direction,
+			l: \ltr
+			r: \rtl
+	_____:
+		each upperKey(colors), (k, v) ~>
+			"--bo:1;background-color:rgba(#v,var(--bo))"
+		props \background-color,
+			upperKey tranCurColor
+			N: \none
+	ba:
 		props \background-attachment,
 			"": \fixed
 			l: \local
 			s: \scroll
-	dc:
+	bc:
 		props \background-clip,
 			b: \border-box
 			"": \padding-box
 			c: \content-box
-	d:
-		props \background-color,
-			tranCurColor
-			n: \none
-		each colors, (k, v) ~>
-			"--bgo:1;background-color:rgba(#v,var(--bgo))"
-	do:
-		props \--bgo,
+	bo:
+		props \--bo,
 			empty 50 opacities
-	dp:
+	bp:
 		props \background-position,
 			empty \c positions
-	dr:
+	br:
 		props \background-repeat,
 			r: \repeat
 			"": \no-repeat
@@ -779,98 +805,101 @@ list =
 			y: \repeat-y
 			o: \round
 			s: \space
-	dz:
+	bz:
 		props \background-size,
 			a: \auto
 			c: \contain
 			"": \cover
-	di:
+	bi:
 		props: \background-image,
 			"": \none
-	br:
+	bb:
+		props \background-blend-mode,
+			empty \m blends
+	u:
 		props \border-radius,
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
-	brt:
+	ut:
 		props [\border-top-left-radius \border-top-right-radius],
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
-	brr:
+	ur:
 		props [\border-top-right-radius \border-bottom-right-radius],
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
-	brb:
+	ub:
 		props [\border-bottom-right-radius \border-bottom-left-radius],
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
-	brl:
+	ul:
 		props [\border-top-left-radius \border-bottom-left-radius],
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
-	btl:
+	utl:
 		props \border-top-left-radius,
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
-	btr:
+	utr:
 		props \border-top-right-radius,
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
-	bbr:
+	ubr:
 		props \border-bottom-right-radius,
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
-	bbl:
+	ubl:
 		props \border-bottom-left-radius,
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
-	bs:
+	ds:
 		props \border-style,
 			"": \solid
 			d: \dashed
 			o: \dotted
 			n: \none
-	bw:
+	d:
 		props \border-width,
 			0: 0
 			2: \2px
 			4: \4px
 			8: \8px
 			"": \1px
-	bwt:
+	dt:
 		props \border-top-width,
 			0: 0
 			2: \2px
 			4: \4px
 			8: \8px
 			"": \1px
-	bwr:
+	dr:
 		props \border-right-width,
 			0: 0
 			2: \2px
 			4: \4px
 			8: \8px
 			"": \1px
-	bwb:
+	db:
 		props \border-bottom-width,
 			0: 0
 			2: \2px
 			4: \4px
 			8: \8px
 			"": \1px
-	bwl:
+	dl:
 		props \border-left-width,
 			0: 0
 			2: \2px
 			4: \4px
 			8: \8px
 			"": \1px
-	bc:
+	dc:
 		props \border-color,
 			tranCurColor
 		each colors, (k, v) ~>
-			"--bo:1;border-color:rgba(#v,var(--bo))"
-	bo:
-		props \--bo,
+			"--do:1;border-color:rgba(#v,var(--do))"
+	do:
+		props \--do,
 			empty 50 opacities
 	sh:
 		props \box-shadow,
@@ -887,9 +916,6 @@ list =
 			empty 50 opacities
 	bm:
 		props \mix-blend-mode,
-			empty \m blends
-	bgb:
-		props \background-blend-mode,
 			empty \m blends
 	ft:
 		props \filter,
@@ -922,7 +948,7 @@ list =
 	ftP:
 		empty 1 map [0 1] ~>
 			"--ftP:sepia(#it)"
-	bp:
+	dp:
 		props \border-collapse,
 			c: \collapse
 			"": \separate
@@ -956,9 +982,9 @@ list =
 			"": "am 1s linear infinite"
 			n: \none
 	_:
-		"x0,xP,x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x18,x20,x22,x24,x26,x28,x30,x32,__xP,__x1,__x2,__x3,__x4,__x5,__x6,__x7,__x8,__x9,__x10,__x11,__x12,__x13,__x14,__x15,__x16,__x18,__x20,__x22,__x24,__x26,__x28,__x30,__x32,x-3,x-6,x-9,x,__x-3,__x-6,__x-9,__x,y0,yP,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,y11,y12,y13,y14,y15,y16,y18,y20,y22,y24,y26,y28,y30,y32,__yP,__y1,__y2,__y3,__y4,__y5,__y6,__y7,__y8,__y9,__y10,__y11,__y12,__y13,__y14,__y15,__y16,__y18,__y20,__y22,__y24,__y26,__y28,__y30,__y32,y-3,y-6,y-9,y,__y-3,__y-6,__y-9,__y,xy,rt0,rt45,rt90,rt135,rt180,__rt45,__rt90,__rt135,__rt180,s0,s50,s75,s90,s95,s100,s105,s110,s125,s150,sx0,sx50,sx75,sx90,sx95,sx100,sx105,sx110,sx125,sx150,sy0,sy50,sy75,sy90,sy95,sy100,sy105,sy110,sy125,sy150,kx0,kx1,kx2,kx3,kx6,kx12,__kx1,__kx2,__kx3,__kx6,__kx12,ky0,ky1,ky2,ky3,ky6,ky12,__ky1,__ky2,__ky3,__ky6,__ky12": "--x:0;--y:0;--rt:0;--sx:1;--sy:1;--kx:0;--ky:0;transform:translate(var(--x),var(--y))rotate(var(--rt))scale(var(--sx),var(--sy))skew(var(--kx),var(--ky))"
+		"x0,xP,x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x18,x20,x22,x24,x26,x28,x30,x32,__xP,__x1,__x2,__x3,__x4,__x5,__x6,__x7,__x8,__x9,__x10,__x11,__x12,__x13,__x14,__x15,__x16,__x18,__x20,__x22,__x24,__x26,__x28,__x30,__x32,x-3,x-6,x-9,x,__x-3,__x-6,__x-9,__x,y0,yP,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,y11,y12,y13,y14,y15,y16,y18,y20,y22,y24,y26,y28,y30,y32,__yP,__y1,__y2,__y3,__y4,__y5,__y6,__y7,__y8,__y9,__y10,__y11,__y12,__y13,__y14,__y15,__y16,__y18,__y20,__y22,__y24,__y26,__y28,__y30,__y32,y-3,y-6,y-9,y,__y-3,__y-6,__y-9,__y,xy,ro0,ro45,ro90,ro135,ro180,__ro45,__ro90,__ro135,__ro180,s0,s50,s75,s90,s95,s100,s105,s110,s125,s150,sx0,sx50,sx75,sx90,sx95,sx100,sx105,sx110,sx125,sx150,sy0,sy50,sy75,sy90,sy95,sy100,sy105,sy110,sy125,sy150,kx0,kx1,kx2,kx3,kx6,kx12,__kx1,__kx2,__kx3,__kx6,__kx12,ky0,ky1,ky2,ky3,ky6,ky12,__ky1,__ky2,__ky3,__ky6,__ky12": "--x:0;--y:0;--ro:0;--sx:1;--sy:1;--kx:0;--ky:0;transform:translate(var(--x),var(--y))rotate(var(--ro))scale(var(--sx),var(--sy))skew(var(--kx),var(--ky))"
 	tf:
-		3: "--x:0;--y:0;--rt:0;--sx:1;--sy:1;--kx:0;--ky:0;transform:translate3d(var(--x),var(--y),0)rotate(var(--rt))scale(var(--sx),var(--sy))skew(var(--kx),var(--ky))"
+		3: "--x:0;--y:0;--ro:0;--sx:1;--sy:1;--kx:0;--ky:0;transform:translate3d(var(--x),var(--y),0)rotate(var(--ro))scale(var(--sx),var(--sy))skew(var(--kx),var(--ky))"
 		n: \transform:none
 		props \transform-origin,
 			positions
@@ -976,11 +1002,11 @@ list =
 			negate empty \f percents4
 	xy:
 		"": "--x:-50%;--y:-50%"
-	rt:
+	ro:
 		map [0 45 90 135 180] ~>
-			"--rt:#{unit it, \deg}"
+			"--ro:#{unit it, \deg}"
 		map [45 90 135 180] ~>
-			"__#it": "--rt:-#{unit it, \deg}"
+			"__#it": "--ro:-#{unit it, \deg}"
 	s:
 		props [\--sx \--sy],
 			map [0 50 75 90 95 100 105 110 125 150] ~>
@@ -1047,7 +1073,7 @@ list =
 			w: \horizontal
 			"": \vertical
 			n: \none
-	u:
+	us:
 		props \user-select,
 			t: \text
 			l: \all
@@ -1065,13 +1091,17 @@ list =
 	ay:
 		empty 8 map [1 to 16] ~>
 			"--ay:#it"
+	im:
+		props \image-rendering,
+			"": \-webkit-optimize-contrast
+			p: \pixelated
 
 {version} = JSON.parse fs.readFileSync \package.json
 date = dayjs!format \YYYY-MM-DD
 
 css = """
-	:root{--bo:1;-moz-tab-size:2;tab-size:2}
-	*,*:before,*:after{border:solid 0 rgba(209,213,219,var(--bo));box-sizing:border-box}
+	:root{--do:1;-moz-tab-size:2;tab-size:2}
+	*,*:before,*:after{border:solid 0 rgba(209,213,219,var(--do));box-sizing:border-box}
 	*{-webkit-tap-highlight-color:transparent}
 	html{line-height:1.25;-webkit-text-size-adjust:100%}
 	body{margin:0;font-family:sans-serif}
@@ -1101,13 +1131,15 @@ readme = """
 
 	## Syntax
 
-	`sign + breakpoint + class`
+	A class has the following form:
+
+	`sign + breakpoint + name`
 
 	[sign](): As sign "-" if the value is negative
 
 	[breakpoint](\#breakpoints): If defined, it will apply exactly that breakpoint
 
-	[class](\#classes): Class
+	[name](\#classes): Class name
 
 	## Breakpoints
 
@@ -1122,17 +1154,15 @@ readme = """
 	Class | CSS
 	----- | ---
 """
-abbrs = []
+abbrs = {}
 for k of list""
 	k = k.split \, .0
-	if k and not abbrs.includes k
-		abbrs.push k
+	abbrs[k] = yes
 
 for k1, v1 of list
 	k1 -= /_+$/
 	v1 = castArray v1
-	if k1 and not abbrs.includes k1
-		abbrs.push k1
+	abbrs[k1] = yes
 	for bp, media of breakpoints
 		if bp
 			css += "@media(#media){"
@@ -1149,8 +1179,12 @@ for k1, v1 of list
 					else
 						sign = ""
 					if k1
-						k4 = k4.charAt(0)toUpperCase! + k4.substring 1
-					stors.push ".#sign#bp#k1#k4"
+						k4 = upperFirst k4
+					name = bp + k1 + k4
+					if /\d/test name.0
+						name = \\ + name.0.charCodeAt!toString(16) + " " + name.substring 1
+						name .= trim!
+					stors.push ".#sign#name"
 				unless bp
 					readme += stors
 						.map ~> "`#{it.substring 1}`"
@@ -1165,9 +1199,9 @@ for k1, v1 of list
 			css += \}
 
 readme += \\n
-abbrs = abbrs
-	.sort (a, b) ~>
-		a.localeCompare b
+abbrs = Object.keys abbrs
+	.filter ~> it + ""
+	.sort (a, b) ~> a.localeCompare b
 	.join \\n
 
 fs.writeFileSync \ant.min.css css
