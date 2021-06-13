@@ -1,15 +1,15 @@
 {
 	"name": "antcss",
-	"version": "2.1.2",
+	"version": "3.0.5",
 	"description": "Utility CSS framework with abbreviated class names",
-	"main": "ant.css",
+	"main": "ant.min.css",
 	"author": "tiencoffee",
 	"keywords": ["css", "framework", "utility", "class"],
 	"homepage": "https://github.com/tiencoffee/antcss",
 	"repository": "github:tiencoffee/antcss",
 	"license": "MIT",
 	"files": [
-		"ant.css"
+		"ant.min.css"
 	],
 	"scripts": {
 		"build": "npx lsc build"

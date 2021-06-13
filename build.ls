@@ -1,4 +1,4 @@
-require! {fs}
+require! {fs, dayjs}
 process.chdir __dirname
 
 negate = (target) ->
@@ -23,6 +23,12 @@ empty = (key, target) ->
 			obj[ks] = obj[k]
 			delete obj[k]
 			break
+	obj
+
+excl = (...keys, target) ->
+	obj = {...target}
+	for key in keys
+		delete obj[key]
 	obj
 
 repeat = (a, b, mapFn) ->
@@ -166,16 +172,16 @@ positions =
 colors =
 	k: "0,0,0"
 	w: "255,255,255"
-	0: "250,250,249"
-	1: "245,245,244"
-	2: "231,229,228"
-	3: "214,211,209"
-	4: "168,162,158"
-	5: "120,113,108"
-	6: "87,83,78"
-	7: "68,64,60"
-	8: "41,37,36"
-	9: "28,25,23"
+	0: "249,250,251"
+	1: "243,244,246"
+	2: "229,231,235"
+	3: "209,213,219"
+	4: "156,163,175"
+	5: "107,114,128"
+	6: "75,85,99"
+	7: "55,65,81"
+	8: "31,41,55"
+	9: "17,24,39"
 	r0: "254,242,242"
 	r1: "254,226,226"
 	r2: "254,202,202"
@@ -242,18 +248,27 @@ blends =
 
 list =
 	"":
-		bl: \display:block
-		ib: \display:inline-block
-		f: "display:flex;justify-content:center;align-items:center"
-		if: "display:inline-flex;justify-content:center;align-items:center"
-		g: \display:grid
-		ig: \display:inline-grid
+		k: \display:block
+		i: \display:inline-block
+		in: \display:inline
+		"f,fC,fCr,fR,fRr": "display:flex;justify-content:center;align-items:center"
+		"g,gC,gCd,gR,gRd,gc1,gc2,gc3,gc4,gc5,gc6,gc7,gc8,gc9,gc10,gc11,gc12,gcN,gr1,gr2,gr3,gr4,gr5,gr6,grN": \display:grid
+		tb: \display:table
+		it: \display:inline-table
+		fr: \display:flow-root
+		ct: \display:contents
+		li: \display:list-item
 		n: \display:none
-		ab: \position:absolute
-		af: "position:absolute;left:0;top:0;width:100%;height:100%"
-		rl: \position:relative
-		fd: \position:fixed
-	bd:
+		"a,af": \position:absolute
+		af: "left:0;top:0;width:100%;height:100%"
+		e: \position:relative
+		fx: \position:fixed
+		st: \position:static
+		sk: \position:sticky
+	____:
+		"if,ifC,ifCr,ifR,ifRr": "display:inline-flex;justify-content:center;align-items:center"
+		"ig,igC,igCd,igR,igRd": \display:inline-grid
+	bk:
 		props \box-decoration-break,
 			"": \slice
 			c: \clone
@@ -261,14 +276,6 @@ list =
 		props \box-sizing,
 			"": \border-box
 			c: \content-box
-	d:
-		props \display,
-			"": \inline
-			t: \table
-			it: \inline-table
-			f: \flow-root
-			c: \contents
-			l: \list-item
 	fl:
 		props \float,
 			"": \right
@@ -296,20 +303,25 @@ list =
 			h: \hidden
 			v: \visible
 			s: \scroll
+			o: \overlay
 	ox:
 		props \overflow-x,
 			a: \auto
 			h: \hidden
 			v: \visible
 			s: \scroll
+			o: \overlay
 		"": "overflow-x:auto;overflow-y:hidden"
+		l: "overflow-x:overlay;overflow-y:hidden"
 	oy:
 		props \overflow-y,
 			a: \auto
 			h: \hidden
 			v: \visible
 			s: \scroll
+			o: \overlay
 		"": "overflow-x:hidden;overflow-y:auto"
+		l: "overflow-x:hidden;overflow-y:overlay"
 	os:
 		props \overscroll-behavior,
 			a: \auto
@@ -329,13 +341,8 @@ list =
 		props \scroll-behavior,
 			"": \smooth
 			a: \auto
-	ps:
-		props \position,
-			"": \static
-			y: \sticky
-	i:
-		props \inset,
-			"": 0
+		"n::-webkit-scrollbar": "display:none"
+		n: "scrollbar-width:none"
 	t:
 		props \top,
 			empty 0 spaces0
@@ -364,10 +371,10 @@ list =
 			percents4
 			negate percents4
 			a: \auto
-	vb:
+	v_:
 		props \visibility,
 			v: \visible
-			"": \hidden
+			h: \hidden
 	z:
 		props \z-index,
 			"": 0
@@ -380,9 +387,9 @@ list =
 			a: \auto
 	f:
 		props \flex,
-			1: 1
-			a: \auto
-			i: \initial
+			1: "1 1 0"
+			a: "1 1 auto"
+			i: "0 1 auto"
 			n: \none
 		props \flex-direction,
 			r: \row
@@ -393,6 +400,12 @@ list =
 			w: \wrap
 			r: \wrap-reverse
 			o: \nowrap
+	if:
+		props \flex-direction,
+			r: \row
+			c: \column
+			rr: \row-reverse
+			cr: \column-reverse
 	fg:
 		props \flex-grow,
 			0: 0
@@ -406,7 +419,13 @@ list =
 			repeat 0 12
 			f: -9999
 			l: 9999
-	g_:
+	g:
+		props \grid-auto-flow,
+			r: \row
+			c: \column
+			rd: "row dense"
+			cd: "column dense"
+	ig:
 		props \grid-auto-flow,
 			r: \row
 			c: \column
@@ -424,7 +443,7 @@ list =
 				(it): "repeat(#it,minmax(0,1fr))"
 				"A#it": "repeat(#it,auto)"
 			n: \none
-	gx:
+	gw:
 		props \grid-column,
 			repeat 1 12 ~> "span #it/span #it"
 			"": \1/-1
@@ -437,42 +456,42 @@ list =
 		props \grid-column-end,
 			empty 13 (repeat 1 13)
 			a: \auto
-	gy:
+	gh:
 		props \grid-row,
 			repeat 1 6 ~> "span #it/span #it"
 			"": \1/-1
 			a: \auto
-	gys:
+	ghs:
 		props \grid-row-start,
 			empty 1 (repeat 1 7)
 			a: \auto
-	gye:
+	ghe:
 		props \grid-row-end,
 			empty 7 (repeat 1 7)
 			a: \auto
-	ga:
+	gac:
 		props \grid-auto-columns,
 			a: \auto
 			mi: \min-content
 			ma: \max-content
 			fr: "minmax(0,1fr)"
-			repeat 1 6 ~>
-				unit (float (100 - it / 6 * 100)toFixed 5), \%
-	gar:
+			repeat 1 12 ~>
+				unit (float (1 / it * 100)toFixed 5), \%
+	ga:
 		props \grid-auto-rows,
 			a: \auto
 			mi: \min-content
 			ma: \max-content
 			fr: "minmax(0,1fr)"
-			repeat 1 12 ~>
-				unit (float (100 / it)toFixed 5), \%
-	g:
+			repeat 1 6 ~>
+				unit (float (1 / it * 100)toFixed 5), \%
+	g_:
 		props \gap,
 			spaces0
-	gw:
+	gx:
 		props \column-gap,
 			spaces0
-	gh:
+	gy:
 		props \row-gap,
 			spaces0
 	j:
@@ -508,7 +527,7 @@ list =
 		props \align-items,
 			s: \flex-start
 			e: \flex-end
-			"": \center
+			c: \center
 			b: \baseline
 			h: \stretch
 	as:
@@ -620,10 +639,23 @@ list =
 		props \font-family,
 			"": "Roboto,sans-serif"
 			s: "Roboto Slab,serif"
-			m: "Cascadia Mono,monospace"
+			m: "Mononoki,monospace"
 	fz:
 		props \font-size,
-			spaces3
+			1: \.625rem
+			2: \.75rem
+			3: \.875rem
+			"": \1rem
+			5: \1.125rem
+			6: \1.25rem
+			7: \1.5rem
+			8: \1.875rem
+			9: \2.25rem
+			10: \3rem
+			11: \3.75rem
+			12: \4.5rem
+			13: \6rem
+			14: \8rem
 	fs:
 		props \font-style,
 			"": \italic
@@ -640,12 +672,13 @@ list =
 			__1: \__.025em
 			__2: \__.05em
 	lh:
-		props \lihe-height,
+		props \line-height,
 			4: 1
 			"": 1.25
-			6: 1.5
-			7: 1.75
-			8: 2
+			6: 1.375
+			7: 1.5
+			8: 1.625
+			9: 2
 	lt:
 		props \list-style-type,
 			"": \none
@@ -657,19 +690,19 @@ list =
 		props \list-style-position,
 			i: \inside
 			o: \outside
-	ta:
+	t_:
 		props \text-align,
 			l: \left
 			r: \right
-			"": \center
+			c: \center
 			j: \justify
 	c:
 		props \color,
 			tranCurColor
 		each colors, (k, v) ~>
-			"--antCo:1;color:rgba(#v,var(--antCo))"
+			"--co:1;color:rgba(#v,var(--co))"
 	co:
-		props \--antCo,
+		props \--co,
 			opacities
 	td:
 		props \text-decoration,
@@ -690,10 +723,12 @@ list =
 		c: "-webkit-text-security:circle;text-security:circle"
 		"": "-webkit-text-security:square;text-security:square"
 		n: "-webkit-text-security:none;text-security:none"
+	___:
+		"lc1,lc,lc3,lc4,lc5,lc6": "--lc:2;display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lc)"
 	lc:
 		empty 2 repeat 1 6 ~>
-			"display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:#it"
-	va:
+			"--lc:#it"
+	v:
 		props \vertical-align,
 			t: \top
 			p: \text-top
@@ -714,29 +749,29 @@ list =
 			"": \break-word
 			b: \break-all
 			k: \keep-all
-	bga:
+	da:
 		props \background-attachment,
 			"": \fixed
 			l: \local
 			s: \scroll
-	bgc:
+	dc:
 		props \background-clip,
 			b: \border-box
 			"": \padding-box
 			c: \content-box
-	bg:
+	d:
 		props \background-color,
 			tranCurColor
 			n: \none
 		each colors, (k, v) ~>
-			"--antBgo:1;background-color:rgba(#v,var(--antBgo))"
-	bgo:
-		props \--antBgo,
+			"--bgo:1;background-color:rgba(#v,var(--bgo))"
+	do:
+		props \--bgo,
 			empty 50 opacities
-	bgp:
+	dp:
 		props \background-position,
 			empty \c positions
-	bgr:
+	dr:
 		props \background-repeat,
 			r: \repeat
 			"": \no-repeat
@@ -744,12 +779,12 @@ list =
 			y: \repeat-y
 			o: \round
 			s: \space
-	bgz:
+	dz:
 		props \background-size,
 			a: \auto
 			c: \contain
 			"": \cover
-	bgi:
+	di:
 		props: \background-image,
 			"": \none
 	br:
@@ -788,6 +823,12 @@ list =
 		props \border-bottom-left-radius,
 			empty 3 spaces0[0 1 2 3 4 5 6]
 			f: \9999px
+	bs:
+		props \border-style,
+			"": \solid
+			d: \dashed
+			o: \dotted
+			n: \none
 	bw:
 		props \border-width,
 			0: 0
@@ -827,16 +868,10 @@ list =
 		props \border-color,
 			tranCurColor
 		each colors, (k, v) ~>
-			"--antBo:1;border-color:rgba(#v,var(--antBo))"
+			"--bo:1;border-color:rgba(#v,var(--bo))"
 	bo:
-		props \--antBo,
+		props \--bo,
 			empty 50 opacities
-	bs:
-		props \border-style,
-			"": \solid
-			d: \dashed
-			o: \dotted
-			n: \none
 	sh:
 		props \box-shadow,
 			1: "0 1px 2px 0 rgba(0,0,0,.05)"
@@ -858,35 +893,35 @@ list =
 			empty \m blends
 	ft:
 		props \filter,
-			"": "var(--antFtL) var(--antFtB) var(--antFtC) var(--antFtG) var(--antFtH) var(--antFtI) var(--antFtS) var(--antFtP)"
+			"": "var(--ftL) var(--ftB) var(--ftC) var(--ftG) var(--ftH) var(--ftI) var(--ftS) var(--ftP)"
 			n: \none
 	ftL:
-		0: "--antFtL:blur(0)"
+		0: "--ftL:blur(0)"
 		empty 8 map [4 8 12 16 24 40 64] ~>
-			"--antFtL:blur(#{it}px)"
+			"--ftL:blur(#{it}px)"
 	ftB:
 		map [0 50 75 90 95 100 105 110 125 150 200] ~>
-			"--antFtB:brightness(#{float it / 100})"
+			"--ftB:brightness(#{float it / 100})"
 	ftC:
 		map [0 50 75 100 125 150 200] ~>
-			"--antFtC:contrast(#{float it / 100})"
+			"--ftC:contrast(#{float it / 100})"
 	ftG:
 		empty 1 map [0 1] ~>
-			"--antFtG:grayscale(#it)"
+			"--ftG:grayscale(#it)"
 	ftH:
 		map [0 15 30 60 90 180] ~>
-			"--antFtH:hue-rotate(#{it}deg)"
+			"--ftH:hue-rotate(#{it}deg)"
 		map [15 30 60 90 180] ~>
-			["__#it" "--antFtH:hue-rotate(-#{it}deg)"]
+			["__#it" "--ftH:hue-rotate(-#{it}deg)"]
 	ftI:
 		empty 1 map [0 1] ~>
-			"--antFtI:invert(#it)"
+			"--ftI:invert(#it)"
 	ftS:
 		map [0 50 100 150 200] ~>
-			"--antFtS:saturate(#{float it / 100})"
+			"--ftS:saturate(#{float it / 100})"
 	ftP:
 		empty 1 map [0 1] ~>
-			"--antFtP:sepia(#it)"
+			"--ftP:sepia(#it)"
 	bp:
 		props \border-collapse,
 			c: \collapse
@@ -896,73 +931,76 @@ list =
 			a: \auto
 			"": \fixed
 	ts:
-		props: \transition,
-			"": "transition:.15s cubic-bezier(.08,.69,.23,.94)"
-			tf: "transition:transform .15s cubic-bezier(.08,.69,.23,.94)"
-			o: "transition:opacity .15s cubic-bezier(.08,.69,.23,.94)"
-			sh: "transition:box-shadow .15s cubic-bezier(.08,.69,.23,.94)"
-			c: "transition-property:background-color,border-color,color,fill,stroke;transition-duration:.15s;transition-timing-function:cubic-bezier(.08,.69,.23,.94)"
-			n: \transition:none
-	tsd:
-		empty 150 map [75 100 150 200 300 500 700 1000] ~>
+		",tf,o,sh,c,pz,75,100,150,200,300,500,700,1000": "transition:.15s cubic-bezier(.25,1,.5,1)"
+	ts_:
+		props \transition-property,
+			tf: \transform
+			o: \opacity
+			sh: \box-shadow
+			c: "background-color,color,border-color,fill,stroke"
+			pz: "left,top,right,bottom,width,height"
+		n: \transition:none
+		map [75 100 150 200 300 500 700 1000] ~>
 			"transition-duration:#{float it / 1000}s"
 	tst:
 		props \transition-timing-function,
 			l: \linear
-			"": "cubic-bezier(.08,.69,.23,.94)"
-			i: "cubic-bezier(.77,.06,.92,.31)"
-			io: "cubic-bezier(.76,.08,.23,.94)"
-	tsl:
+			"": "cubic-bezier(.25,1,.5,1)"
+			i: "cubic-bezier(.5,0,.75,0)"
+			io: "cubic-bezier(.76,0,.24,1)"
+	tsd:
 		map [75 100 150 200 300 500 700 1000] ~>
 			"transition-delay:#{float it / 1000}s"
 	am:
 		props \animation,
-			rt: "antAmRt 1s linear infinite"
+			"": "am 1s linear infinite"
 			n: \none
+	_:
+		"x0,xP,x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x18,x20,x22,x24,x26,x28,x30,x32,__xP,__x1,__x2,__x3,__x4,__x5,__x6,__x7,__x8,__x9,__x10,__x11,__x12,__x13,__x14,__x15,__x16,__x18,__x20,__x22,__x24,__x26,__x28,__x30,__x32,x-3,x-6,x-9,x,__x-3,__x-6,__x-9,__x,y0,yP,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,y11,y12,y13,y14,y15,y16,y18,y20,y22,y24,y26,y28,y30,y32,__yP,__y1,__y2,__y3,__y4,__y5,__y6,__y7,__y8,__y9,__y10,__y11,__y12,__y13,__y14,__y15,__y16,__y18,__y20,__y22,__y24,__y26,__y28,__y30,__y32,y-3,y-6,y-9,y,__y-3,__y-6,__y-9,__y,xy,rt0,rt45,rt90,rt135,rt180,__rt45,__rt90,__rt135,__rt180,s0,s50,s75,s90,s95,s100,s105,s110,s125,s150,sx0,sx50,sx75,sx90,sx95,sx100,sx105,sx110,sx125,sx150,sy0,sy50,sy75,sy90,sy95,sy100,sy105,sy110,sy125,sy150,kx0,kx1,kx2,kx3,kx6,kx12,__kx1,__kx2,__kx3,__kx6,__kx12,ky0,ky1,ky2,ky3,ky6,ky12,__ky1,__ky2,__ky3,__ky6,__ky12": "--x:0;--y:0;--rt:0;--sx:1;--sy:1;--kx:0;--ky:0;transform:translate(var(--x),var(--y))rotate(var(--rt))scale(var(--sx),var(--sy))skew(var(--kx),var(--ky))"
 	tf:
-		"": "--antTx:0;--antTy:0;--antRt:0;--antSx:1;--antSy:1;--antKx:0;--antKy:0;transform:translate(var(--antTx),var(--antTy))rotate(var(--antRt))scale(var(--antSx),var(--antSy))skew(var(--antKx),var(--antKy))"
-		3: "--antTx:0;--antTy:0;--antRt:0;--antSx:1;--antSy:1;--antKx:0;--antKy:0;transform:translate3d(var(--antTx),var(--antTy),0)rotate(var(--antRt))scale(var(--antSx),var(--antSy))skew(var(--antKx),var(--antKy))"
+		3: "--x:0;--y:0;--rt:0;--sx:1;--sy:1;--kx:0;--ky:0;transform:translate3d(var(--x),var(--y),0)rotate(var(--rt))scale(var(--sx),var(--sy))skew(var(--kx),var(--ky))"
 		n: \transform:none
-	tfo:
 		props \transform-origin,
-			empty \c positions
-	tx:
-		props \--antTx,
-			empty \f spaces0
-			negate empty \f spacesP
-			percents4
-			negate percents4
-	ty:
-		props \--antTy,
-			empty \f spaces0
-			negate empty \f spacesP
-			percents4
-			negate percents4
+			positions
+	x:
+		props \--x,
+			spaces0
+			negate spacesP
+			empty \f percents4
+			negate empty \f percents4
+	y:
+		props \--y,
+			spaces0
+			negate spacesP
+			empty \f percents4
+			negate empty \f percents4
+	xy:
+		"": "--x:-50%;--y:-50%"
 	rt:
 		map [0 45 90 135 180] ~>
-			"--antRt:#{unit it, \deg}"
+			"--rt:#{unit it, \deg}"
 		map [45 90 135 180] ~>
-			"__#it": "--antRt:-#{unit it, \deg}"
-	sc:
-		props [\--antSx \--antSy],
+			"__#it": "--rt:-#{unit it, \deg}"
+	s:
+		props [\--sx \--sy],
 			map [0 50 75 90 95 100 105 110 125 150] ~>
 				float it / 100
 	sx:
 		map [0 50 75 90 95 100 105 110 125 150] ~>
-			"--antSx:#{float it / 100}"
+			"--sx:#{float it / 100}"
 	sy:
 		map [0 50 75 90 95 100 105 110 125 150] ~>
-			"--antSy:#{float it / 100}"
+			"--sy:#{float it / 100}"
 	kx:
 		map [0 1 2 3 6 12] ~>
-			"--antKx:#{unit it, \deg}"
+			"--kx:#{unit it, \deg}"
 		map [1 2 3 6 12] ~>
-			"__#it": "--antKx:-#{unit it, \deg}"
+			"__#it": "--kx:-#{unit it, \deg}"
 	ky:
 		map [0 1 2 3 6 12] ~>
-			"--antKy:#{unit it, \deg}"
+			"--ky:#{unit it, \deg}"
 		map [1 2 3 6 12] ~>
-			"__#it": "--antKy:-#{unit it, \deg}"
+			"__#it": "--ky:-#{unit it, \deg}"
 	ap:
 		props \appearance,
 			"": \none
@@ -984,21 +1022,20 @@ list =
 			a: \auto
 			n: \none
 	ol:
-		props \outline,
-			n: \none
-		0: \none
-		1: "--antOo:1;box-shadow:0 0 0 1px var(--antOc)"
-		2: "--antOo:1;box-shadow:0 0 0 2px var(--antOc)"
-		"": "--antOo:1;box-shadow:0 0 0 3px var(--antOc)"
-		4: "--antOo:1;box-shadow:0 0 0 4px var(--antOc)"
-		8: "--antOo:1;box-shadow:0 0 0 8px var(--antOc)"
+		"": \outline:0
+		0: \box-shadow:none
+		1: "--oo:1;box-shadow:0 0 0 1px var(--oc)"
+		2: "--oo:1;box-shadow:0 0 0 2px var(--oc)"
+		3: "--oo:1;box-shadow:0 0 0 3px var(--oc)"
+		4: "--oo:1;box-shadow:0 0 0 4px var(--oc)"
+		8: "--oo:1;box-shadow:0 0 0 8px var(--oc)"
 	oc:
-		props \--antOc,
+		props \--oc,
 			tranCurColor
 		each colors, (k, v) ~>
-			"--antOc:rgba(#v,var(--antOo))"
+			"--oc:rgba(#v,var(--oo))"
 	oo:
-		props \--antOo,
+		props \--oo,
 			empty 50 opacities
 	pe:
 		props \pointer-events,
@@ -1010,7 +1047,7 @@ list =
 			w: \horizontal
 			"": \vertical
 			n: \none
-	us:
+	u:
 		props \user-select,
 			t: \text
 			l: \all
@@ -1020,31 +1057,35 @@ list =
 		e: "-webkit-user-drag:element;user-drag:element"
 		a: "-webkit-user-drag:auto;user-drag:auto"
 		"": "-webkit-user-drag:none;user-drag:none"
-	ar:
-		"": "--antAx:8;--antAy:8;aspect-ratio:var(--antAx)/var(--antAy)"
+	__:
+		"a1,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax,ax9,ax10,ax11,ax12,ax13,ax14,ax15,ax16,ay1,ay2,ay3,ay4,ay5,ay6,ay7,ay,ay9,ay10,ay11,ay12,ay13,ay14,ay15,ay16": "--ax:8;--ay:8;aspect-ratio:var(--ax)/var(--ay)"
 	ax:
-		map [1 to 7] ++ [9 to 16] ~>
-			"--antAx:#it"
+		empty 8 map [1 to 16] ~>
+			"--ax:#it"
 	ay:
-		map [1 to 7] ++ [9 to 16] ~>
-			"--antAy:#it"
+		empty 8 map [1 to 16] ~>
+			"--ay:#it"
 
-css = '''
-	:root{-moz-tab-size:2;tab-size:2}
-	*,*:before,*:after{box-sizing:border-box}
+{version} = JSON.parse fs.readFileSync \package.json
+date = dayjs!format \YYYY-MM-DD
+
+css = """
+	:root{--bo:1;-moz-tab-size:2;tab-size:2}
+	*,*:before,*:after{border:solid 0 rgba(209,213,219,var(--bo));box-sizing:border-box}
 	*{-webkit-tap-highlight-color:transparent}
 	html{line-height:1.25;-webkit-text-size-adjust:100%}
 	body{margin:0;font-family:sans-serif}
 	small{font-size:80%}
-	button,input,select,textarea{font-family:inherit;font-size:100%}
+	button,input,select,textarea{border-radius:0;font-family:inherit;font-size:100%;line-height:inherit}
 	textarea{resize:vertical}
 	fieldset{margin:0}
 	ul{list-style-type:square}
 	table{border-collapse:collapse}
-	@keyframes antAmRt{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-'''
-css .= replace /\n/g ""
-readme = '''
+	@keyframes am{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+"""
+css =
+	"/*! antcss, v#version, #date */\n" + css.replace /\n/g ""
+readme = """
 	# AntCSS :ant:
 
 	Utility CSS framework with abbreviated class names.
@@ -1056,17 +1097,17 @@ readme = '''
 
 	Using CDN:
 
-	https://cdn.jsdelivr.net/npm/antcss/ant.css
+	https://cdn.jsdelivr.net/npm/antcss@#version/ant.min.css
 
 	## Syntax
 
 	`sign + breakpoint + class`
 
 	[sign](): As sign "-" if the value is negative
-	
-	[breakpoint](#breakpoints): If defined, it will apply exactly that breakpoint
-	
-	[class](#classes): Class
+
+	[breakpoint](\#breakpoints): If defined, it will apply exactly that breakpoint
+
+	[class](\#classes): Class
 
 	## Breakpoints
 
@@ -1080,44 +1121,60 @@ readme = '''
 
 	Class | CSS
 	----- | ---
-'''
+"""
+abbrs = []
+for k of list""
+	k = k.split \, .0
+	if k and not abbrs.includes k
+		abbrs.push k
 
-function handle bp, media
-	if bp
-		css += "@media(#media){"
-	for k1, v1 of list
-		k1 -= /_+$/
-		v1 = castArray v1
+for k1, v1 of list
+	k1 -= /_+$/
+	v1 = castArray v1
+	if k1 and not abbrs.includes k1
+		abbrs.push k1
+	for bp, media of breakpoints
+		if bp
+			css += "@media(#media){"
 		for v2 in v1
 			for k3, v3 of v2
 				readme += \\n unless bp
-				k3 = k3.split " "
+				k3 = k3.split \,
 				v3 .= replace /__/g \-
-				selectors = []
-				for v4 in k3
-					sign = v4.includes \__ and \- or ""
-					if sign
-						v4 -= \__
+				stors = []
+				for k4 in k3
+					if k4.includes \__
+						sign = \-
+						k4 -= \__
+					else
+						sign = ""
 					if k1
-						v4 = v4.charAt(0)toUpperCase! + v4.substring 1
-					selectors.push ".#sign#bp#k1#v4"
+						k4 = k4.charAt(0)toUpperCase! + k4.substring 1
+					stors.push ".#sign#bp#k1#k4"
 				unless bp
-					readme += selectors
+					readme += stors
 						.map ~> "`#{it.substring 1}`"
 						.join " "
 					text = v3
 						.replace /:/g ": "
 						.replace /;/g \;<br>
 					readme += " | #text;"
-				selectors .= join \,
-				css += "#selectors{#v3}"
-	if bp
-		css += \}
-
-for bp, media of breakpoints
-	handle bp, media
+				stors .= join \,
+				css += "#stors{#v3}"
+		if bp
+			css += \}
 
 readme += \\n
+abbrs = abbrs
+	.sort (a, b) ~>
+		a.localeCompare b
+	.join \\n
 
-fs.writeFileSync \ant.css css
+fs.writeFileSync \ant.min.css css
 fs.writeFileSync \README.md readme
+fs.writeFileSync \abbrs.txt abbrs
+
+console.log """
+	> ant.min.css - #{(css.length / 1000)toFixed 2} KB
+	> README.md - #{(readme.length / 1000)toFixed 2} KB
+"""
