@@ -1,8 +1,6 @@
-.gitignore
-.npmignore
-_.sublime-project
-_.sublime-workspace
-index.html
-build.ls
-build1.ls
-abbrs.txt
+*
+
+!package.json
+!ant.min.css
+!README.md
+!LICENSE

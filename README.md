@@ -9,7 +9,7 @@ Utility CSS framework with abbreviated class names.
 
 Using CDN:
 
-https://cdn.jsdelivr.net/npm/antcss@4.0.0/ant.min.css
+https://cdn.jsdelivr.net/npm/antcss@4.0.2/ant.min.css
 
 ## Syntax
 
@@ -35,11 +35,12 @@ Prefix   | Media
 
 Class | CSS
 ----- | ---
-`tW` `bW` `lH` `rH` | position: absolute;
+`j` `jS` `jE` `jB` `jR` `jV` `ji` `jiS` `jiE` `jiH` | display: flex;<br>align-items: center;
+`aC` `aS` `aE` `aL` `aH` `ac` `acS` `acE` `acB` `acR` `acV` | display: flex;<br>justify-content: center;
 `k` | display: block;
 `i` | display: inline-block;
 `in` | display: inline;
-`f` `fC` `fCr` `fR` `fRr` | display: flex;<br>justify-content: center;<br>align-items: center;
+`f` `fC` `fCr` `fR` `fRr` `jH` `j1` | display: flex;<br>justify-content: center;<br>align-items: center;
 `g` `gC` `gCd` `gR` `gRd` `gc1` `gc2` `gc3` `gc4` `gc5` `gc6` `gc7` `gc8` `gc9` `gc10` `gc11` `gc12` `gcN` `gr1` `gr2` `gr3` `gr4` `gr5` `gr6` `grN` | display: grid;
 `tb` | display: table;
 `it` | display: inline-table;
@@ -47,8 +48,12 @@ Class | CSS
 `ct` | display: contents;
 `li` | display: list-item;
 `n` | display: none;
-`a` `af` | position: absolute;
+`a` `af` `at` `ar` `ab` `al` | position: absolute;
 `af` | left: 0;<br>top: 0;<br>width: 100%;<br>height: 100%;
+`at` | top: 0;<br>width: 100%;
+`ar` | right: 0;<br>height: 100%;
+`ab` | bottom: 0;<br>width: 100%;
+`al` | left: 0;<br>height: 100%;
 `e` | position: relative;
 `fx` | position: fixed;
 `st` | position: static;
@@ -172,7 +177,6 @@ Class | CSS
 `-t-9` | top: -75%;
 `-tF` | top: -100%;
 `tA` | top: auto;
-`tW` | top: 0;
 `r1` | right: .25rem;
 `r2` | right: .5rem;
 `r3` | right: .75rem;
@@ -233,7 +237,6 @@ Class | CSS
 `-r-9` | right: -75%;
 `-rF` | right: -100%;
 `rA` | right: auto;
-`rH` | right: 0;
 `b1` | bottom: .25rem;
 `b2` | bottom: .5rem;
 `b3` | bottom: .75rem;
@@ -294,7 +297,6 @@ Class | CSS
 `-b-9` | bottom: -75%;
 `-bF` | bottom: -100%;
 `bA` | bottom: auto;
-`bW` | bottom: 0;
 `l1` | left: .25rem;
 `l2` | left: .5rem;
 `l3` | left: .75rem;
@@ -355,7 +357,6 @@ Class | CSS
 `-l-9` | left: -75%;
 `-lF` | left: -100%;
 `lA` | left: auto;
-`lH` | left: 0;
 `vV` | visibility: visible;
 `vH` | visibility: hidden;
 `z1` | z-index: 1;
@@ -642,7 +643,7 @@ Class | CSS
 `aS` | align-items: flex-start;
 `aE` | align-items: flex-end;
 `aC` | align-items: center;
-`aB` | align-items: baseline;
+`aL` | align-items: baseline;
 `aH` | align-items: stretch;
 `asS` | align-self: flex-start;
 `asE` | align-self: flex-end;

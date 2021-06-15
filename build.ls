@@ -260,12 +260,13 @@ blends =
 
 list =
 	_______:
-		"tW,bW,lH,rH": "position:absolute"
+		"j,jS,jE,jB,jR,jV,ji,jiS,jiE,jiH": "display:flex;align-items:center"
+		"aC,aS,aE,aL,aH,ac,acS,acE,acB,acR,acV": "display:flex;justify-content:center"
 	"":
 		k: \display:block
 		i: \display:inline-block
 		in: \display:inline
-		"f,fC,fCr,fR,fRr": "display:flex;justify-content:center;align-items:center"
+		"f,fC,fCr,fR,fRr,jH,j1": "display:flex;justify-content:center;align-items:center"
 		"g,gC,gCd,gR,gRd,gc1,gc2,gc3,gc4,gc5,gc6,gc7,gc8,gc9,gc10,gc11,gc12,gcN,gr1,gr2,gr3,gr4,gr5,gr6,grN": \display:grid
 		tb: \display:table
 		it: \display:inline-table
@@ -273,8 +274,12 @@ list =
 		ct: \display:contents
 		li: \display:list-item
 		n: \display:none
-		"a,af": \position:absolute
+		"a,af,at,ar,ab,al": \position:absolute
 		af: "left:0;top:0;width:100%;height:100%"
+		at: "top:0;width:100%"
+		ar: "right:0;height:100%"
+		ab: "bottom:0;width:100%"
+		al: "left:0;height:100%"
 		e: \position:relative
 		fx: \position:fixed
 		st: \position:static
@@ -365,7 +370,6 @@ list =
 			percents4
 			negate percents4
 			a: \auto
-			w: 0
 	r:
 		props \right,
 			empty 0 spaces0
@@ -373,7 +377,6 @@ list =
 			percents4
 			negate percents4
 			a: \auto
-			h: 0
 	b:
 		props \bottom,
 			empty 0 spaces0
@@ -381,7 +384,6 @@ list =
 			percents4
 			negate percents4
 			a: \auto
-			w: 0
 	l:
 		props \left,
 			empty 0 spaces0
@@ -389,7 +391,6 @@ list =
 			percents4
 			negate percents4
 			a: \auto
-			h: 0
 	v_:
 		props \visibility,
 			v: \visible
@@ -550,7 +551,7 @@ list =
 			s: \flex-start
 			e: \flex-end
 			c: \center
-			b: \baseline
+			l: \baseline
 			h: \stretch
 	as:
 		props \align-self,

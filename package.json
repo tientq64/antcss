@@ -1,6 +1,6 @@
 {
 	"name": "antcss",
-	"version": "4.0.0",
+	"version": "4.0.2",
 	"description": "Utility CSS framework with abbreviated class names",
 	"main": "ant.min.css",
 	"author": "tiencoffee",
